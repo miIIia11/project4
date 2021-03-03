@@ -1,0 +1,29 @@
+﻿@model IEnumerable<Project4.Models.PhamNhan>
+ 
+@*<style>
+    .form-control {
+        text-align: center;  
+    }
+</style>*@
+
+    <div class="container" id="thanhTimKiem">
+        <div class="row">
+            <div class="col-md-3">
+                <input name="txtTenHoacMa" type="text" class="form-control" placeholder="Tìm kiếm">
+            </div>
+            <div class="col-md-2"> 
+                @Html.DropDownList("khuID", new SelectList(ViewBag.Khu, "ID", "TenKhu", ViewBag.SelectedKhu), new { @class = "form-control", @id = "txtKhu" , @onchange = "LoadLaiThanhTK()"})
+            </div> 
+            <div class="col-md-2">
+                @Html.DropDownList("phongID", new SelectList(ViewBag.Phong, "ID", "TenPhong"), new { @class = "form-control" , @id = "txtPhong" })
+            </div> 
+            <div class="col-md-1">
+                <button class="btn btn-primary" onclick="TimKiem()">
+                    <i class="fa fa-search"></i>
+                </button>
+            </div>
+            <div class="col-md-4">
+            </div>
+        </div>
+    </div>
+

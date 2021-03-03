@@ -1,0 +1,33 @@
+﻿@model IEnumerable<Project4.Models.PhamNhan>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_LayoutMain.cshtml";
+}
+<h2>Index Phạm nhân</h2>
+
+<br /> @Html.Partial("_PhamNhansSearchBar")
+<br /><p>@Html.ActionLink("Thêm mới", "Create")</p>
+<br /> @Html.Partial("_PhamNhansDataTable", Model.ToList())
+
+@section scripts{
+    <script>
+        function LoadLaiThanhTK() {
+            var khuID = $("#txtKhu").val();
+            var link = '@Url.Action("ThanhTimKiem", "PhamNhans", new { khuID = "-1" })';
+            link = link.replace("-1", khuID);
+            $('#thanhTimKiem').load(link);
+        }
+
+        function TimKiem() {
+            var txtTenHoacMa = $("#txtTenHoacMa").text();
+            var txtKhu = $("#txtKhu").val();
+            var txtPhong = $("#txtPhong").val();
+            var link = '@Html.Raw(Url.Action("TimKiem", "PhamNhans", new { @txtTenHoacMa = "-1" , @khuID = "-2" , @phongID = "-3"  }))';
+            link = link.replace("-1", txtTenHoacMa);
+            link = link.replace("-2", txtKhu);
+            link = link.replace("-3", txtPhong);
+            $('#table').load(link);
+        }
+    </script>    
+}

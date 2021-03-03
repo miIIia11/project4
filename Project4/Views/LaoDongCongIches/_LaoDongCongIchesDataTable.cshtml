@@ -1,0 +1,43 @@
+﻿@model IEnumerable<Project4.Models.LaoDongCongIch>
+
+<table class="table"> 
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.PhamNhanID)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.QuanNgucID)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.KhuVucLamViec)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.BieuHien)
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.PhamNhanID)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.QuanNgucID)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.KhuVucLamViec)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.BieuHien)
+            </td>
+            <td>
+                @Html.ActionLink("Chỉnh sửa", "Edit", new { id = item.ID }) |
+                @Html.ActionLink("Chi tiết", "Details", new { id = item.ID }) |
+                @Html.ActionLink("Xóa", "Delete", new { id = item.ID })
+            </td>
+        </tr>
+    }
+
+</table>

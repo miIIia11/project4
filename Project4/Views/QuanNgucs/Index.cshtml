@@ -1,0 +1,11 @@
+﻿@model IEnumerable<Project4.Models.QuanNguc>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_LayoutMain.cshtml";
+}
+
+<h2>Index Quản ngục</h2>
+@Html.Partial("_QuanNgucsSearchBar")
+<br /><p>@Html.ActionLink("Thêm mới", "Create")</p>
+@Html.Partial("_QuanNgucsDataTable", Model.ToList())

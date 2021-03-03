@@ -1,0 +1,105 @@
+﻿@model IEnumerable<Project4.Models.PhamNhan>
+<link rel="stylesheet"  href="~/Content/tableResponsive.css"/>
+  
+<div class="scrollmenu" id="table">
+    <table class="table table-bordered">
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.TenPhamNhan)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.BiDanh)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.AnhNhanDien)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.QueQuan)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.NgaySinh)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.GioiTinh)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.IDKhu)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ToiDanh)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.MucDoNguyHiem)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.SoNgayGiamGiu)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CMND)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.QuaTrinhGayAn)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.DiaDiemGayAn)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PhongGiamID)
+            </th>
+            <th></th>
+        </tr>
+
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.TenPhamNhan)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.BiDanh)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.AnhNhanDien)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.QueQuan)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.NgaySinh)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.GioiTinh)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.IDKhu)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ToiDanh)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.MucDoNguyHiem)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.SoNgayGiamGiu)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.CMND)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.QuaTrinhGayAn)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.DiaDiemGayAn)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.PhongGiamID)
+                </td>
+                <td>
+                    @Html.ActionLink("Chỉnh sửa", "Edit", new { id = item.ID }) |
+                    @Html.ActionLink("Chi tiết", "Details", new { id = item.ID }) |
+                    @Html.ActionLink("Xóa", "Delete", new { id = item.ID })
+                </td>
+            </tr>
+        }
+    </table>
+</div>

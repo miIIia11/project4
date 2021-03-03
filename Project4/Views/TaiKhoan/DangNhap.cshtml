@@ -1,0 +1,105 @@
+﻿@model Project4.Models.LoginViewModel
+
+@{
+    ViewBag.Title = "Đăng nhập";
+    Layout = "";
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <meta name="description" content="" />
+    <meta name="author" content="" />
+    <title>Quản lí trại giam</title>
+    <link href="css/styles.css" rel="stylesheet" />
+    <link href="https://cdn.datatables.net/1.10.20/css/dataTables.bootstrap4.min.css" rel="stylesheet"
+          crossorigin="anonymous" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/js/all.min.js" crossorigin="anonymous"></script>
+    <title>@ViewBag.Title - My ASP.NET Application</title>
+
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+</head>
+<body>
+    <link rel="icon" type="image/png" href="~/Asserts/Login/images/icons/favicon.ico" />
+    <link rel="stylesheet" type="text/css" href="~/Asserts/Login/fonts/font-awesome-4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" type="text/css" href="~/Asserts/Login/fonts/Linearicons-Free-v1.0.0/icon-font.min.css">
+    <link rel="stylesheet" type="text/css" href="~/Asserts/Login/vendor/animate/animate.css">
+    <link rel="stylesheet" type="text/css" href="~/Asserts/Login/vendor/css-hamburgers/hamburgers.min.css">
+    <link rel="stylesheet" type="text/css" href="~/Asserts/Login/vendor/animsition/css/animsition.min.css">
+    <link rel="stylesheet" type="text/css" href="~/Asserts/Login/vendor/select2/select2.min.css">
+    <link rel="stylesheet" type="text/css" href="~/Asserts/Login/vendor/daterangepicker/daterangepicker.css">
+    <link rel="stylesheet" type="text/css" href="~/Asserts/Login/css/util.css">
+    <link rel="stylesheet" type="text/css" href="~/Asserts/Login/css/main.css"> 
+    <div class="limiter">
+        <div class="container-login100">
+            <div class="wrap-login100">
+                <div class="img-responsive img-portfolio img-hover">
+                    <div class="login100-form-title" style="background-image: url(../../Asserts/Login/images/logoCongAn1.png)">
+                    </div>
+                </div> 
+                @*@RenderPartial("View")*@
+                @using (Html.BeginForm("LoginCustom", "Account", FormMethod.Post))
+                {
+                    @Html.AntiForgeryToken() 
+                    <br /> 
+                    <p style="color:red; text-align: center; font-size: 22px">@ViewBag.CheckValid</p>
+                    <div class="form-horizontal"> 
+                        <hr />
+                        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                        <div class="form-group">
+                            @*@Html.LabelFor(model => model., htmlAttributes: new { @class = "control-label col-md-4" })*@
+                            <label class="control-label col-md-4">Tên đăng nhập</label>
+                            <div class="col-md-8">
+                                @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control" } })
+                                @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                        <div class="form-group"> 
+                            @*@Html.LabelFor(model => model.MatKhau, htmlAttributes: new { @class = "control-label col-md-4" })*@
+                            <label class="control-label col-md-4">Mật khẩu</label>
+                            <div class="col-md-8">
+                                @Html.EditorFor(model => model.Password, new { htmlAttributes = new { @class = "form-control" } })
+                                @Html.ValidationMessageFor(model => model.Password, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                        <br />
+                        <div class="form-group">
+                            <div class="col-md-offset-5 col-md-3">
+                                <input type="submit" value="Đăng nhập" class="btn btn-success" />
+                            </div>
+                            <div class="col-md-4">
+                                @*<u>@Html.ActionLink("Quên mật khẩu?", "UpdatePassword")</u>*@
+                            </div>
+                        </div>
+                        <hr />
+                        <br />
+                        <div class="form-group">
+                            <div class="col-md-4">
+                            </div>
+                            @*<div class="col-md-8">
+                                    <u>@Html.ActionLink("Chưa có tài khoản? Đăng kí ngay", "Register")</u>
+                                </div>*@
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+    <div class="container body-content">
+        <hr />
+        <footer>
+            <p style="color: white">&copy; @DateTime.Now.Year - Trại giam Chí Hòa</p>
+        </footer>
+    </div>
+    <script src="~/Asserts/Login/vendor/animsition/js/animsition.min.js"></script>
+    <script src="~/Asserts/Login/vendor/bootstrap/js/popper.js"></script>
+    <script src="~/Asserts/Login/vendor/daterangepicker/daterangepicker.js"></script>
+    <script src="~/Asserts/Login/vendor/countdowntime/countdowntime.js"></script>
+    <script src="~/Asserts/Login/js/main.js"></script>
+</body>
+</html>

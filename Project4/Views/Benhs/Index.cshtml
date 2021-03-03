@@ -1,0 +1,11 @@
+﻿@model IEnumerable<Project4.Models.Benh>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_LayoutMain.cshtml";
+}
+ 
+<h2>Index quản lý bệnh của phạm nhân</h2> 
+<br /> @Html.Partial("_BenhSearchBar")
+<br /><p>@Html.ActionLink("Thêm mới", "Create")</p>
+<br /> @Html.Partial("_BenhDataTable", Model.ToList())

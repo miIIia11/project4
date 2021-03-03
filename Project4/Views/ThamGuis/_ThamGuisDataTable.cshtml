@@ -1,0 +1,56 @@
+﻿@model IEnumerable<Project4.Models.ThamGui>
+<div class="scrollmenu" id="table">
+    <table class="table">
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.PhamNhanID)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.QuanNgucID)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.KeHoachThamGui)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.NgayThamGui)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ThongTinNguoiThamHoi)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.SoLanThamHoi)
+            </th>
+            <th></th>
+        </tr>
+
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.PhamNhanID)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.QuanNgucID)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.KeHoachThamGui)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.NgayThamGui)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ThongTinNguoiThamHoi)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.SoLanThamHoi)
+                </td>
+                <td>
+                    @Html.ActionLink("Chỉnh sửa", "Edit", new { id = item.ID }) |
+                    @Html.ActionLink("Chi tiết", "Details", new { id = item.ID }) |
+                    @Html.ActionLink("Xóa", "Delete", new { id = item.ID })
+                </td>
+            </tr>
+        }
+
+    </table>
+</div>

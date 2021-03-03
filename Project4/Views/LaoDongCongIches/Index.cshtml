@@ -1,0 +1,11 @@
+﻿@model IEnumerable<Project4.Models.LaoDongCongIch>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_LayoutMain.cshtml";
+}
+
+<h2>Index Lao động cải tạo</h2>
+<br /> @Html.Partial("_LaoDongCongIchesSearchBar")
+<br /><p>@Html.ActionLink("Thêm mới", "Create")</p>
+<br /> @Html.Partial("_LaoDongCongIchesDataTable", Model.ToList())

@@ -1,0 +1,11 @@
+﻿@model IEnumerable<Project4.Models.CheDoNghiPhepCuaQuanNguc>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_LayoutMain.cshtml";
+}
+
+<h2>Index chế độ nghỉ phép của quản ngục</h2>
+<br /> @Html.Partial("_NghiPhepQuanNgucsSearchBar")
+<br /><p>@Html.ActionLink("Thêm mới", "Create")</p>
+<br /> @Html.Partial("_NghiPhepQuanNgucsDataTable", Model.ToList())

@@ -1,0 +1,26 @@
+﻿@model IEnumerable<Project4.Models.CheDoNghiPhepCuaQuanNguc>
+
+@using (Html.BeginForm("Index", "CheDoNghiPhepCuaQuanNgucs", FormMethod.Get))
+{
+    <div class="container">
+        <div class="row">
+            <div class="col-md-3">
+                <input type="text" class="form-control" placeholder="Tìm kiếm">
+            </div>
+            <div class="col-md-2">
+                @foreach (var item in Model)
+                {
+                    @Html.DropDownListFor(modelItem => item.ID, ViewBag.Khu as SelectList
+                        , "Khu", new { @class = "form-control" })
+                }
+            </div>
+            <div class="col-md-1">
+                <button class="btn btn-primary" type="submit">
+                    <i class="fa fa-search"></i>
+                </button>
+            </div>
+            <div class="col-md-6">
+            </div>
+        </div>
+    </div>
+}
