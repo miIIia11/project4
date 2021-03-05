@@ -14,7 +14,7 @@ namespace Project4.Controllers
     {
         private ApplicationDbContext db = new ApplicationDbContext();
 
-        // GET: PhamNhans
+        // GET: PhamNhans oh yes
         public ActionResult Index()      
         {
             var khu = db.Khu.ToList();
