@@ -168,6 +168,7 @@
     <Compile Include="App_Start\IdentityConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\Startup.Auth.cs" />
+    <Compile Include="Common\CommonConstant.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\AnXasController.cs" />
     <Compile Include="Controllers\BenhsController.cs" />
@@ -183,9 +184,9 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\202102211413143_initial.cs" />
-    <Compile Include="Migrations\202102211413143_initial.Designer.cs">
-      <DependentUpon>202102211413143_initial.cs</DependentUpon>
+    <Compile Include="Migrations\202103041333119_upcode04032020.cs" />
+    <Compile Include="Migrations\202103041333119_upcode04032020.Designer.cs">
+      <DependentUpon>202103041333119_upcode04032020.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
@@ -524,8 +525,8 @@
     <Content Include="Scripts\jquery-1.10.2.min.map" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\202102211413143_initial.resx">
-      <DependentUpon>202102211413143_initial.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\202103041333119_upcode04032020.resx">
+      <DependentUpon>202103041333119_upcode04032020.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
