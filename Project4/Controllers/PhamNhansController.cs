@@ -30,7 +30,9 @@ namespace Project4.Controllers
             {
                 
             }
-            
+
+            ViewBag.ToiDanh = Common.CommonConstant.toiDanh;
+            ViewBag.MucDoNguyHiem = Common.CommonConstant.mucDoNguyHiem;
 
             return View(db.PhamNhan.ToList());
         } 
@@ -83,6 +85,11 @@ namespace Project4.Controllers
         // GET: PhamNhans/Create
         public ActionResult Create()
         {
+            ViewBag.GioiTinh = new SelectList(Common.CommonConstant.gioiTinh, "Key", "Value", null);
+            ViewBag.ToiDanh = new SelectList(Common.CommonConstant.toiDanh, "Key", "Value", null);
+            ViewBag.MucDoNguyHiem = new SelectList(Common.CommonConstant.mucDoNguyHiem, "Key", "Value", null);
+            ViewBag.IDKhu = new SelectList(db.Khu, "ID", "TenKhu" , null);
+            ViewBag.PhongGiamID = new SelectList(db.PhongGiam, "ID", "TenPhong", null);
             return View();
         }
 
@@ -116,6 +123,11 @@ namespace Project4.Controllers
             {
                 return HttpNotFound();
             }
+            ViewBag.GioiTinh = new SelectList(Common.CommonConstant.gioiTinh, "Key", "Value", phamNhan.GioiTinh);
+            ViewBag.ToiDanh = new SelectList(Common.CommonConstant.toiDanh, "Key", "Value", phamNhan.ToiDanh);
+            ViewBag.MucDoNguyHiem = new SelectList(Common.CommonConstant.mucDoNguyHiem, "Key", "Value", phamNhan.MucDoNguyHiem);
+            ViewBag.IDKhu = new SelectList(db.Khu, "ID", "TenKhu", phamNhan.IDKhu);
+            ViewBag.PhongGiamID = new SelectList(db.PhongGiam, "ID", "TenPhong", phamNhan.PhongGiamID);
             return View(phamNhan);
         }
 

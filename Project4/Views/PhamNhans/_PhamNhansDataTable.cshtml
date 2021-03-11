@@ -68,16 +68,16 @@
                     @Html.DisplayFor(modelItem => item.NgaySinh)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.GioiTinh)
+                    @Enum.GetName(typeof(Project4.Common.CommonConstant.GioiTinh), item.GioiTinh)
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.IDKhu)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.ToiDanh)
+                    @(((Dictionary<int, string>)ViewBag.ToiDanh)[item.ToiDanh])
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.MucDoNguyHiem)
+                    @(((Dictionary<int, string>)ViewBag.MucDoNguyHiem)[item.MucDoNguyHiem])
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.SoNgayGiamGiu)

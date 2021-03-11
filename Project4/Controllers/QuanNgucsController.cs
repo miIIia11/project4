@@ -21,6 +21,22 @@ namespace Project4.Controllers
             return View(db.QuanNguc.ToList());
         }
 
+        public ActionResult TimKiem(string txtTenHoacMa, string khuID)
+        {
+            IQueryable<QuanNguc> listQuanNguc = db.QuanNguc;
+            if (txtTenHoacMa.Length == 5)
+            {
+                //listPhamNhan = db.PhamNhan.Where(w => w. == txtTenOrMa);
+            }
+            else
+            {
+                listQuanNguc = listQuanNguc.Where(w => w.TenQuanNguc.Contains(txtTenHoacMa));
+            }
+            var IDkhu = int.Parse(khuID);
+            listQuanNguc = listQuanNguc.Where(w => w.KhuID == IDkhu);
+            
+            return PartialView("_QuanNgucsDataTable", listQuanNguc);
+        }
         // GET: QuanNgucs/Details/5
         public ActionResult Details(Guid? id)
         {

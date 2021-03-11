@@ -424,6 +424,12 @@ namespace Project4.Controllers
             return RedirectToAction("Index", "Home");
         }
 
+        public ActionResult LogOffCustom()
+        {
+            AuthenticationManager.SignOut(DefaultAuthenticationTypes.ApplicationCookie);
+            return RedirectToAction("DangNhap", "TaiKhoan");
+        }
+
         //
         // GET: /Account/ExternalLoginFailure
         [AllowAnonymous]

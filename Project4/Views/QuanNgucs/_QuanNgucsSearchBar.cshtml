@@ -1,17 +1,16 @@
 ﻿@model IEnumerable<Project4.Models.QuanNguc>
 
-@using (Html.BeginForm("Index", "QuanNgucs", FormMethod.Get))
-{
+
     <div class="container">
         <div class="row"> 
             <div class="col-md-3">
-                <input type="text" class="form-control" placeholder="Tìm kiếm">
+                <input type="text" name="txtTenHoacMa" class="form-control" placeholder="Tìm kiếm">
             </div>
             <div class="col-md-2">
-                @Html.DropDownList("txtKhu", new SelectList(ViewBag.Khu, "ID", "TenKhu"), new { @class = "form-control" })
+                @Html.DropDownList("khuID", new SelectList(ViewBag.Khu, "ID", "TenKhu", ViewBag.SelectedKhu), new { @class = "form-control", @id = "txtKhu" })
             </div>
             <div class="col-md-1">
-                <button class="btn btn-primary" type="submit">
+                <button class="btn btn-primary" onclick="TimKiem()" >
                     <i class="fa fa-search"></i>
                 </button>
             </div>
@@ -19,5 +18,5 @@
             </div>
         </div>
     </div>
-}
+
 

@@ -11,69 +11,69 @@ namespace Project4.Common
         public static string USERID = "USERID";
         public static string PERMISSION_SESSION = "PERMISSION_SESSION";
 
-        Dictionary<int, string> mucDoAnXa = new Dictionary<int, string>()
+        public static Dictionary<int, string> mucDoAnXa = new Dictionary<int, string>()
         {
-            {1, "1 Tháng" }, //adding key/value using the Add() method
-            {2, "3 Tháng" },
-            {3, "6 Tháng" },
-            {4, "9 Tháng"},
-            {5, "1 Năm"},
-            {6, "2 Năm"},
-            {7, "3 Năm"},
-            {8, "4 Năm"},
+            { (int)MucDoAnXa.motthang , "1 Tháng" }, //adding key/value using the Add() method
+            { (int)MucDoAnXa.bathang, "3 Tháng" },
+            { (int)MucDoAnXa.sauthang, "6 Tháng" },
+            { (int)MucDoAnXa.chinthang, "9 Tháng"},
+            { (int)MucDoAnXa.motnam, "1 Năm"},
+            { (int)MucDoAnXa.hainam, "2 Năm"},
+            { (int)MucDoAnXa.banam, "3 Năm"},
+            { (int)MucDoAnXa.bonnam, "4 Năm"},
         };
 
-        Dictionary<int, string> mucDoCaiTao = new Dictionary<int, string>()
+        public static Dictionary<int, string> mucDoCaiTao = new Dictionary<int, string>()
         {
-            {1, "Tốt"},
-            {2, "Khá"},
-            {3, "Trung Bình" },
-            {4, "Yếu"},
-            {5, "Kém"}
+            { (int)MucDoCaiTao.tot, "Tốt"},
+            { (int)MucDoCaiTao.kha, "Khá"},
+            { (int)MucDoCaiTao.trungbinh, "Trung Bình" },
+            { (int)MucDoCaiTao.yeu, "Yếu"},
+            { (int)MucDoCaiTao.kem, "Kém"}
         };
 
-        Dictionary<int, string> khuVucLamViec = new Dictionary<int, string>()
+        public static Dictionary<int, string> khuVucLamViec = new Dictionary<int, string>()
         {
-            {1, "Trồng trọt"},
-            {2, "Chăn nuôi"},
-            {3, "Chế biến đá"},
-            {4, "Gia công vàng mã"},
-            {5, "Thủ công mỹ nghệ"},
-            {6, "Cơ khí"},
-            {7, "May mặc"}
+            { (int)KhuVucLamViec.trongtrot, "Trồng trọt"},
+            { (int)KhuVucLamViec.channuoi, "Chăn nuôi"},
+            { (int)KhuVucLamViec.chebienda, "Chế biến đá"},
+            { (int)KhuVucLamViec.giacongvangma, "Gia công vàng mã"},
+            { (int)KhuVucLamViec.thucongmynghe, "Thủ công mỹ nghệ"},
+            { (int)KhuVucLamViec.cokhi, "Cơ khí"},
+            { (int)KhuVucLamViec.maymac, "May mặc"}
         };
 
-        Dictionary<int, string> bieuHien = new Dictionary<int, string>()
+        public static Dictionary<int, string> bieuHien = new Dictionary<int, string>()
         {
-            {1, "Tốt"},
-            {2, "Khá"},
-            {3, "Trung Bình" },
-            {4, "Yếu"},
-            {5, "Kém"}
+            { (int)BieuHien.tot, "Tốt"},
+            { (int)BieuHien.kha, "Khá"},
+            { (int)BieuHien.trungbinh, "Trung Bình" },
+            { (int)BieuHien.yeu, "Yếu"},
+            { (int)BieuHien.kem, "Kém"}
         };
 
-        Dictionary<int, string> gioiTinh = new Dictionary<int, string>()
+        public static Dictionary<int, string> gioiTinh = new Dictionary<int, string>()
         {
-            {1, "Nam"},
-            {2, "Nữ"},
+            { (int)GioiTinh.nam, "Nam"},
+            { (int)GioiTinh.nu, "Nữ"},
         };
-        Dictionary<int, string> toiDanh = new Dictionary<int, string>()
+        public static Dictionary<int, string> toiDanh = new Dictionary<int, string>()
         {
-            {1, "Tội cưỡng hiếp người dưới 16 tuổi"},
-            {2, "Tội cướp tài sản"},
-            {3, "Tội sản xuất, buôn bán hàng giả là lương thực, thực phẩm, phụ gia thực phẩm" },
-            {4, "Tội đầu hàng địch"},
-            {5, "Tội chống mệnh lệnh"},
-            {6, "Tội phá hủy công trình, cơ sở, phương tiện quan trọng về an ninh quốc gia"},
-            {7, "Tội tàng trữ trái phép chất ma túy"}
+            { (int)ToiDanh.toihiepdamnguoiduoimuoisautuoi, "Tội cưỡng hiếp người dưới 16 tuổi"},
+            { (int)ToiDanh.toicuoptaisan, "Tội cướp tài sản"},
+            { (int)ToiDanh.toisanxuatbuonbanhanggia, "Tội sản xuất, buôn bán hàng giả là lương thực, thực phẩm, phụ gia thực phẩm" },
+            { (int)ToiDanh.toidauhangdich, "Tội đầu hàng địch"},
+            { (int)ToiDanh.toichongmenhlenh, "Tội chống mệnh lệnh"},
+            { (int)ToiDanh.toiphahoaitaisanquocgia, "Tội phá hủy công trình, cơ sở, phương tiện quan trọng về an ninh quốc gia"},
+            { (int)ToiDanh.toitangtrumatuy, "Tội tàng trữ trái phép chất ma túy"}
         };
 
-        Dictionary<int, string> mucDoNguyHiem = new Dictionary<int, string>()
+        public static Dictionary<int, string> mucDoNguyHiem = new Dictionary<int, string>()
         {
-            { 1, "Tội phạm ít nghiêm trọng"},
-            { 2, "Tội phạm nghiêm trọng" },
-            { 3, "Tội phạm rất nghiêm trọng" },
-            { 4, "Tội phạm đặc biệt nghiêm trọng." }
+            { (int)MucDoNguyHiem.toiphamitnghiemtrong, "Tội phạm ít nghiêm trọng"},
+            { (int)MucDoNguyHiem.toiphamnghiemtrong, "Tội phạm nghiêm trọng" },
+            { (int)MucDoNguyHiem.toiphamratnghiemtrong, "Tội phạm rất nghiêm trọng" },
+            { (int)MucDoNguyHiem.toiphamdacbietnghiemtrong, "Tội phạm đặc biệt nghiêm trọng." }
         };
 
         // bang AnXa

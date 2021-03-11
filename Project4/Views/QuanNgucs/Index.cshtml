@@ -9,3 +9,16 @@
 @Html.Partial("_QuanNgucsSearchBar")
 <br /><p>@Html.ActionLink("Thêm mới", "Create")</p>
 @Html.Partial("_QuanNgucsDataTable", Model.ToList())
+
+@section scripts{
+    <script>
+        function TimKiem() {
+            var txtTenHoacMa = $("#txtTenHoacMa").text();
+            var txtKhu = $("#txtKhu").val();
+            var link = '@Html.Raw(Url.Action("TimKiem", "QuanNgucs", new { @txtTenHoacMa = "-1" , @khuID = "-2" }))';
+            link = link.replace("-1", txtTenHoacMa);
+            link = link.replace("-2", txtKhu);
+            $('#table').load(link);
+        }
+    </script>
+}
