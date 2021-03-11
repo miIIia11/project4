@@ -3,12 +3,21 @@
 
     <div class="container">
         <div class="row"> 
+<<<<<<< HEAD
             <div class="col-md-3">
                 <input type="text" name="txtTenHoacMa" class="form-control" placeholder="Tìm kiếm">
             </div>
             <div class="col-md-2">
                 @Html.DropDownList("khuID", new SelectList(ViewBag.Khu, "ID", "TenKhu", ViewBag.SelectedKhu), new { @class = "form-control", @id = "txtKhu" })
             </div>
+=======
+            <div class="col-md-3"> 
+                <input type="text" class="form-control" placeholder="Tìm kiếm">
+            </div>
+            <div class="col-md-2">
+                @Html.DropDownList("txtKhu", new SelectList(ViewBag.Khu, "ID", "TenKhu"),"-- Khu --", new { @class = "form-control" })
+            </div> 
+>>>>>>> refs/remotes/origin/main
             <div class="col-md-1">
                 <button class="btn btn-primary" onclick="TimKiem()" >
                     <i class="fa fa-search"></i>
