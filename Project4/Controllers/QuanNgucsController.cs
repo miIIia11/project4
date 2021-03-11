@@ -14,27 +14,34 @@ namespace Project4.Controllers
     {
         private ApplicationDbContext db = new ApplicationDbContext();
 
-        // GET: QuanNgucs
-        public ActionResult Index() 
+        // GET: QuanNgucs 
+        public ActionResult Index()
         {
-            ViewBag.Khu = db.Khu.ToList();
+            ViewBag.Khu = db.Khu.ToList(); 
             return View(db.QuanNguc.ToList());
-        }
+        }  
+         
+        public ActionResult ViewDetails(Guid id) 
+        { 
+            QuanNguc quanNguc;   
+            quanNguc = db.QuanNguc.Find(id);
+            return PartialView("_Details", quanNguc);
+        } 
 
         // GET: QuanNgucs/Details/5
-        public ActionResult Details(Guid? id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            QuanNguc quanNguc = db.QuanNguc.Find(id);
-            if (quanNguc == null)
-            {
-                return HttpNotFound();
-            }
-            return View(quanNguc);
-        }
+        //public ActionResult Details(Guid? id)
+        //{
+        //    if (id == null)
+        //    {
+        //        return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+        //    }
+        //    QuanNguc quanNguc = db.QuanNguc.Find(id);
+        //    if (quanNguc == null)
+        //    {
+        //        return HttpNotFound();
+        //    }
+        //    return View(quanNguc);
+        //}
 
         // GET: QuanNgucs/Create
         public ActionResult Create()

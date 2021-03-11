@@ -184,10 +184,6 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\202103041333119_upcode04032020.cs" />
-    <Compile Include="Migrations\202103041333119_upcode04032020.Designer.cs">
-      <DependentUpon>202103041333119_upcode04032020.cs</DependentUpon>
-    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\AnXa.cs" />
@@ -255,6 +251,7 @@
     <Content Include="Asserts\Login\vendor\select2\select2.min.css" />
     <Content Include="Asserts\Login\vendor\select2\select2.min.js" />
     <Content Include="Asserts\MasterPage1\css\style.css" />
+    <Content Include="Asserts\MasterPage1\img\bar-chart.png" />
     <Content Include="Asserts\MasterPage1\img\icon\auction.png" />
     <Content Include="Asserts\MasterPage1\img\icon\building.png" />
     <Content Include="Asserts\MasterPage1\img\icon\calendar.png" />
@@ -268,88 +265,28 @@
     <Content Include="Asserts\MasterPage1\img\icon\security1.png" />
     <Content Include="Asserts\MasterPage1\img\icon\shovel.png" />
     <Content Include="Asserts\MasterPage1\img\index.png" />
+    <Content Include="Asserts\MasterPage1\img\index0307.png" />
+    <Content Include="Asserts\MasterPage1\img\Logo công an edit %283%29.png" />
+    <Content Include="Asserts\MasterPage1\img\Logo công an edit 0306part2.png" />
+    <Content Include="Asserts\MasterPage1\img\Logo công an edit0306.png" />
+    <Content Include="Asserts\MasterPage1\img\Logo công an edit0603.png" />
     <Content Include="Asserts\MasterPage1\img\logo.png" />
     <Content Include="Asserts\MasterPage1\js\chart-area-demo.js" />
     <Content Include="Asserts\MasterPage1\js\chart-bar-demo.js" />
     <Content Include="Asserts\MasterPage1\js\datatables-demo.js" />
     <Content Include="Asserts\MasterPage1\js\script.js" />
-    <Content Include="Asserts\MasterPage\css\bootstrap4.css">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Asserts\MasterPage\css\styles.css" />
-    <Content Include="Asserts\MasterPage\img\icon\auction.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Asserts\MasterPage\img\icon\building.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Asserts\MasterPage\img\icon\calendar.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Asserts\MasterPage\img\icon\clock.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Asserts\MasterPage\img\icon\files.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Asserts\MasterPage\img\icon\injection.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Asserts\MasterPage\img\icon\jail.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Asserts\MasterPage\img\icon\meeting.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Asserts\MasterPage\img\icon\prisoner.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Asserts\MasterPage\img\icon\security.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Asserts\MasterPage\img\icon\security1.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Asserts\MasterPage\img\icon\shovel.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Asserts\MasterPage\img\index.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Asserts\MasterPage\img\logo.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Asserts\MasterPage\js\all.min.js">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Asserts\MasterPage\js\bootstrap.bundle.min.js">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Asserts\MasterPage\js\chart-area-demo.js" />
-    <Content Include="Asserts\MasterPage\js\chart-bar-demo.js" />
-    <Content Include="Asserts\MasterPage\js\chart-pie-demo.js" />
-    <Content Include="Asserts\MasterPage\js\Chart.min.js">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Asserts\MasterPage\js\datatables-demo.js" />
-    <Content Include="Asserts\MasterPage\js\dataTables.bootstrap4.min.js">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Asserts\MasterPage\js\dataTables.min.js">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Asserts\MasterPage\js\scripts.js" />
-    <Content Include="Asserts\MasterPage\js\jquery-3.5.1.slim.min.js">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
+    <Content Include="Content\dataTables.bootstrap4.min.css" />
+    <Content Include="Content\popUp.css" />
     <Content Include="Content\SearchBar.css" />
     <Content Include="Content\tableResponsive.css" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
+    <Content Include="Scripts\all.min.js" />
+    <Content Include="Scripts\bootstrap.bundle.min.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="Asserts\Login\fonts\font-awesome-4.7.0\fonts\fontawesome-webfont.eot" />
@@ -414,9 +351,13 @@
     <Content Include="Asserts\Login\vendor\bootstrap\css\bootstrap.css.map" />
     <Content Include="Asserts\Login\vendor\bootstrap\css\bootstrap.min.css.map" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
+    <Content Include="Scripts\Chart.min.js" />
+    <Content Include="Scripts\dataTables.bootstrap4.min.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />
     <None Include="Scripts\jquery.validate-vsdoc.js" />
+    <Content Include="Scripts\jquery-3.5.1.slim.min.js" />
+    <Content Include="Scripts\jquery.dataTables.min.js" />
     <Content Include="Scripts\jquery.validate.js" />
     <Content Include="Scripts\jquery.validate.min.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.js" />
@@ -512,6 +453,8 @@
     <Content Include="Views\Benhs\Index.cshtml" />
     <Content Include="Views\Benhs\_BenhDataTable.cshtml" />
     <Content Include="Views\Benhs\_BenhSearchBar.cshtml" />
+    <Content Include="Views\QuanNgucs\_QuanNgucsPopupDetail.cshtml" />
+    <Content Include="Views\QuanNgucs\_Details.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -523,11 +466,6 @@
     <Content Include="packages.config" />
     <None Include="Project_Readme.html" />
     <Content Include="Scripts\jquery-1.10.2.min.map" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Migrations\202103041333119_upcode04032020.resx">
-      <DependentUpon>202103041333119_upcode04032020.cs</DependentUpon>
-    </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

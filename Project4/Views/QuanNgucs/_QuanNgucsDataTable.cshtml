@@ -1,6 +1,6 @@
 ﻿@model IEnumerable<Project4.Models.QuanNguc>
 
-<table class="table">
+<table class="table" id="CustomerGrid">
     <tr>
         <th>
             @Html.DisplayNameFor(model => model.TenQuanNguc)
@@ -33,7 +33,7 @@
             @Html.DisplayNameFor(model => model.QuanHam)
         </th>
         <th></th>
-    </tr> 
+    </tr>
 
     @foreach (var item in Model)
     {
@@ -70,10 +70,74 @@
             </td>
             <td>
                 @Html.ActionLink("Chỉnh sửa", "Edit", new { id = item.ID }) |
-                @Html.ActionLink("Chi tiết", "Details", new { id = item.ID }) |
+                @*@Html.ActionLink("Chi tiết", "ViewDetails", new { id = item.ID, onclick = "getDepartment()" }) |*@
+                <button type="button" class="btn btn-success" onclick="getDepartment(@item.ID)">Chi tiết</button>|
                 @Html.ActionLink("Xóa", "Delete", new { id = item.ID })
             </td>
         </tr>
     }
-
 </table>
+
+
+<div class="modal fade" role="dialog" id="departmentModal" aria-labelledby="departmentModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content" id="departmentmodalBody">
+
+        </div>
+    </div>
+</div>
+
+
+<script>
+    function getDepartment(id) {
+        $.get("/QuanNgucs/ViewDetails", { id: id }, function (res) {
+            $("#departmentmodalBody").html(res);
+            $("#departmentModal").modal('show');
+        })
+    }
+</script>
+
+
+
+
+
+
+
+
+<!--<div id="dialog" style="display: none">-->
+@*@Html.Partial("_Details", Model.FirstOrDefault())*@
+<!--</div>-->
+@*<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+    <script src="http://ajax.aspnetcdn.com/ajax/jquery.ui/1.8.9/jquery-ui.js" type="text/javascript"></script>
+    <link href="http://ajax.aspnetcdn.com/ajax/jquery.ui/1.8.9/themes/blitzer/jquery-ui.css"
+          rel="stylesheet" type="text/css" />*@
+
+<!--<script type="text/javascript">
+    $(function () {
+        $("#dialog").dialog({
+            autoOpen: false,
+            modal: true,
+            title: "View Details"
+        });
+        $("#CustomerGrid .details").click(function () {
+            var Id = $(this).closest("tr").find("td").eq(0).html();
+            $.ajax({
+                type: "POST",
+                url: "/QuanNgucs/ViewDetails",
+                data: '{Id: "' + Id + '" }',
+                contentType: "application/json; charset=utf-8",
+                dataType: "html",
+                success: function (response) {
+                    $('#dialog').html(response);
+                    $('#dialog').dialog('open');
+                },
+                failure: function (response) {
+                    alert(response.responseText);
+                },
+                error: function (response) {
+                    alert(response.responseText);
+                }
+            });
+        });
+    });
+</script>-->

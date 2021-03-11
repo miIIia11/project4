@@ -4,7 +4,7 @@
     ViewBag.Title = "Index";
     Layout = "~/Views/Shared/_LayoutMain.cshtml";
 }
-<h2>Index ân xá</h2>
+<h2>Quản lý chế độ ân xá</h2>
 <br /> @Html.Partial("_AnXaSearchBar") 
 <br /><p>@Html.ActionLink("Thêm mới", "Create")</p>
 <br /> @Html.Partial("_AnXaDataTable", Model.ToList())

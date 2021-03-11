@@ -4,12 +4,12 @@
 {
     <div class="container">
         <div class="row"> 
-            <div class="col-md-3">
+            <div class="col-md-3"> 
                 <input type="text" class="form-control" placeholder="Tìm kiếm">
             </div>
             <div class="col-md-2">
-                @Html.DropDownList("txtKhu", new SelectList(ViewBag.Khu, "ID", "TenKhu"), new { @class = "form-control" })
-            </div>
+                @Html.DropDownList("txtKhu", new SelectList(ViewBag.Khu, "ID", "TenKhu"),"-- Khu --", new { @class = "form-control" })
+            </div> 
             <div class="col-md-1">
                 <button class="btn btn-primary" type="submit">
                     <i class="fa fa-search"></i>

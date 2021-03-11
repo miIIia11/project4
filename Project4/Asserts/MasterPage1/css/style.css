@@ -3247,6 +3247,7 @@ input[type=button].btn-block {
     }
 }
 
+/*//////qqqqqqqqqqqqqqqq//*/
 .dropup .dropdown-menu {
     top: auto;
     bottom: 100%;
@@ -10885,3 +10886,10 @@ body {
     .sb-sidenav-light .sb-sidenav-footer {
         background-color: #e9ecef;
     }
+
+
+/*
+#dropdowTuNhan5 {
+    color: red;
+    font-size: larger;
+}*/
