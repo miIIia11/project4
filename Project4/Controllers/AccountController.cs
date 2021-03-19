@@ -9,6 +9,7 @@ using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using Project4.Models;
+using System.Security.Principal;
 
 namespace Project4.Controllers
 {
@@ -17,6 +18,7 @@ namespace Project4.Controllers
     {
         private ApplicationSignInManager _signInManager;
         private ApplicationUserManager _userManager;
+        private ApplicationDbContext db;
 
         public AccountController()
         {
@@ -516,5 +518,14 @@ namespace Project4.Controllers
             }
         }
         #endregion
+    }
+    public static class IdentityExtensions
+    {
+        public static string GetQuanNgucId(this IIdentity identity)
+        {
+            var claim = ((ClaimsIdentity)identity).FindFirst("QuanNgucID");
+            // Test for null to avoid issues during local testing
+            return (claim != null) ? claim.Value.ToString() : string.Empty;
+        }   
     }
 }

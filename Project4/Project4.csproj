@@ -184,9 +184,14 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202103161526355_themBangBanGiaoPhamNhan.cs" />
+    <Compile Include="Migrations\202103161526355_themBangBanGiaoPhamNhan.Designer.cs">
+      <DependentUpon>202103161526355_themBangBanGiaoPhamNhan.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\AnXa.cs" />
+    <Compile Include="Models\BanGiaoPhamNhan.cs" />
     <Compile Include="Models\Benh.cs" />
     <Compile Include="Models\CheDoNghiPhepCuaQuanNguc.cs" />
     <Compile Include="Models\IdentityModels.cs" />
@@ -455,6 +460,7 @@
     <Content Include="Views\Benhs\_BenhSearchBar.cshtml" />
     <Content Include="Views\QuanNgucs\_QuanNgucsPopupDetail.cshtml" />
     <Content Include="Views\QuanNgucs\_Details.cshtml" />
+    <Content Include="Views\CheDoNghiPhepCuaQuanNgucs\_PhongDamNhiemBoi.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -466,6 +472,11 @@
     <Content Include="packages.config" />
     <None Include="Project_Readme.html" />
     <Content Include="Scripts\jquery-1.10.2.min.map" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Migrations\202103161526355_themBangBanGiaoPhamNhan.resx">
+      <DependentUpon>202103161526355_themBangBanGiaoPhamNhan.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

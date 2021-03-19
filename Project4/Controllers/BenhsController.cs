@@ -17,6 +17,10 @@ namespace Project4.Controllers
         // GET: Benhs
         public ActionResult Index() 
         {
+            if (User.Identity.GetQuanNgucId() == "")
+            {
+                return RedirectToAction("DangNhap", "TaiKhoan");
+            }
             return View(db.Benh.ToList());
         }
 

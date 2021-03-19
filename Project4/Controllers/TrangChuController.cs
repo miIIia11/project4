@@ -11,6 +11,10 @@ namespace Project4.Controllers
         // GET: TrangChu
         public ActionResult Index()
         {
+            if (User.Identity.GetQuanNgucId() == "")
+            {
+                return RedirectToAction("DangNhap", "TaiKhoan");
+            }
             return View(); 
         } 
     }

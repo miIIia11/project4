@@ -11,6 +11,10 @@ namespace Project4.Controllers
     {
         public ActionResult DangNhap()
         {
+            if (User.Identity.GetQuanNgucId() != "")
+            {
+                return RedirectToAction("Index", "TrangChu");
+            }
             return View();
         }
 

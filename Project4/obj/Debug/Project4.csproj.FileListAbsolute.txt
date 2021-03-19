@@ -66,3 +66,6 @@ E:\Project4\Project4\project4\Project4\bin\Microsoft.Owin.Security.Twitter.xml
 E:\Project4\Project4\project4\Project4\bin\Microsoft.Owin.Security.MicrosoftAccount.xml
 E:\Project4\Project4\project4\Project4\obj\Debug\Project4.dll
 E:\Project4\Project4\project4\Project4\obj\Debug\Project4.pdb
+E:\Project4\Project4\project4\Project4\obj\Debug\Project4.csprojResolveAssemblyReference.cache
+E:\Project4\Project4\project4\Project4\obj\Debug\Project4.Migrations.themBangBanGiaoPhamNhan.resources
+E:\Project4\Project4\project4\Project4\obj\Debug\Project4.csproj.GenerateResource.Cache

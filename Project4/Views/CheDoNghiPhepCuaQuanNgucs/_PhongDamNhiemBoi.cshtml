@@ -1,0 +1,37 @@
+﻿@{ 
+    var phong = (List<Project4.Models.PhongGiam>)ViewBag.Phong;
+    var quanNgucDamNhiem = (List<string>)ViewBag.QuanNgucBanGiaoID;
+    var qndn = (IQueryable<Project4.Models.QuanNguc>)ViewBag.QuanNgucDamNhiem;
+}
+<div id="banGiao">
+    @if (quanNgucDamNhiem == null || quanNgucDamNhiem.Count < 1)
+    {
+        foreach (var item in phong)
+        {
+            <input name="phongName" value="@item.TenPhong" readonly="readonly" />
+            @Html.DropDownList("QuanNgucDamNhiem", new SelectList(ViewBag.QuanNgucDamNhiem, "ID", "TenQuanNguc", null))<br />
+        }
+    }
+    else
+    {
+        foreach (var item in phong.Zip( quanNgucDamNhiem ,Tuple.Create ))
+        {
+            <input name="phongName" value="@item.Item1.TenPhong" readonly="readonly" />
+            <select name="QuanNgucDamNhiem">
+                @foreach (var i in qndn)
+                {
+                    if (i.ID.ToString() == item.Item2)
+                    {
+                        <option value="@i.ID" selected>@i.TenQuanNguc</option>
+                    }
+                    else
+                    {
+                        <option value="@i.ID">@i.TenQuanNguc</option>
+                    }
+                }
+            </select><br/>
+            @*@Html.DropDownList("QuanNgucDamNhiem", new SelectList(ViewBag.QuanNgucDamNhiem, "ID", "TenQuanNguc", item.Item2))<br />*@
+        }
+    }
+</div>
+

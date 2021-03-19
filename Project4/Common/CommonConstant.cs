@@ -8,7 +8,7 @@ namespace Project4.Common
     public class CommonConstant
     {
         public static string USER_SESSION = "USER_SESSION";
-        public static string USERID = "USERID";
+        public static string QUANNGUCID = "QUANNGUCID";
         public static string PERMISSION_SESSION = "PERMISSION_SESSION";
 
         public static Dictionary<int, string> mucDoAnXa = new Dictionary<int, string>()

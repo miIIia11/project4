@@ -17,6 +17,10 @@ namespace Project4.Controllers
         // GET: PhamNhans oh yes
         public ActionResult Index()      
         {
+            if (User.Identity.GetQuanNgucId() == "")
+            {
+                return RedirectToAction("DangNhap", "TaiKhoan");
+            }
             var khu = db.Khu.ToList();
             if (khu != null)
             {

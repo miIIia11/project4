@@ -17,6 +17,10 @@ namespace Project4.Controllers
         // GET: AnXas  
         public ActionResult Index()
         {
+            if (User.Identity.GetQuanNgucId() == "")
+            {
+                return RedirectToAction("DangNhap", "TaiKhoan");
+            }
             ViewBag.Khu = db.Khu.ToList();
 
             ViewBag.Phong = db.PhongGiam.ToList();

@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 using System;
+using System.Collections.Generic;
 
 namespace Project4.Models
 {
@@ -16,6 +17,9 @@ namespace Project4.Models
             // Note the authenticationType must match the one defined in CookieAuthenticationOptions.AuthenticationType
             var userIdentity = await manager.CreateIdentityAsync(this, DefaultAuthenticationTypes.ApplicationCookie);
             // Add custom user claims here
+            List<Claim> claims = new List<Claim>();
+            claims.Add(new Claim("QuanNgucID", QuanNgucID.ToString()));
+            userIdentity.AddClaims(claims);
             return userIdentity;
         }
     }
@@ -37,6 +41,7 @@ namespace Project4.Models
         public virtual DbSet<QuanLyBenhTat> QuanLyBenhTat { get; set; }
         public virtual DbSet<QuanNguc> QuanNguc { get; set; }
         public virtual DbSet<ThamGui> ThamGui { get; set; }
+        public virtual DbSet<BanGiaoPhamNhan> BanGiaoPhamNhan { get; set; }
         public static ApplicationDbContext Create()
         {
             return new ApplicationDbContext();
