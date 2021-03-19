@@ -13,8 +13,11 @@ namespace Project4.Models
         [DisplayName("Tên quản ngục")]
         public string TenQuanNguc { get; set; }
 
+        [DisplayName("Ảnh nhận dạng")]
+        public string AnhNhanDien { get; set; }
+
         [DisplayName("Ngày sinh")]
-        public DateTime NgaySinh { get; set; }
+        public DateTime? NgaySinh { get; set; }
 
         [DisplayName("Quê quán")]
         public string QueQuan { get; set; }
