@@ -75,6 +75,40 @@ namespace Project4.Common
             { (int)MucDoNguyHiem.toiphamratnghiemtrong, "Tội phạm rất nghiêm trọng" },
             { (int)MucDoNguyHiem.toiphamdacbietnghiemtrong, "Tội phạm đặc biệt nghiêm trọng." }
         };
+		
+		public static Dictionary<int, string> chucVu = new Dictionary<int, string>()
+        {
+			{ (int)ChucVu.congnhanvienchuc, "Công nhân viên chức" },
+            { (int)ChucVu.chiensi, "Chiến sĩ"},
+			{ (int)ChucVu.hasiquan, "Hạ sĩ quan"},
+			{ (int)ChucVu.quannhanchuyennghiep, "Quân nhân chuyên nghiệp"},
+            { (int)ChucVu.siquan, "Sĩ quan"},
+			{ (int)ChucVu.phodoitruong, "Phó đội trưởng"},
+			{ (int)ChucVu.doitruong, "Đội trưởng"},
+            { (int)ChucVu.photruongphantrai, "Phó trưởng phân trại" },
+			{ (int)ChucVu.truongphantrai, "Trưởng phân trại"},
+			{ (int)ChucVu.phogiamthi, "Phó giám thị"},
+            { (int)ChucVu.giamthi, "Giám thị" }
+        };
+		
+		public static Dictionary<int, string> quanHam = new Dictionary<int, string>()
+        {
+			{ (int)QuanHam.hasi, "Hạ sĩ"},
+			{ (int)QuanHam.trungsi, "Trung sĩ"},
+			{ (int)QuanHam.thuongsi, "Hạ sĩ"},
+			{ (int)QuanHam.thieuuy, "Thiếu úy"},
+			{ (int)QuanHam.trunguy, "Trung úy"},
+			{ (int)QuanHam.thuonguy, "Thượng úy"},
+			{ (int)QuanHam.daiuy, "Đại úy"},
+			{ (int)QuanHam.thieuta, "Thiếu tá"},
+			{ (int)QuanHam.trungta, "Trung tá"},
+			{ (int)QuanHam.thuongta, "Thượng tá"},
+			{ (int)QuanHam.daita, "Đại tá"},
+			{ (int)QuanHam.thieutuong, "Thiếu tướng"},
+			{ (int)QuanHam.trungtuong, "Trung tướng"},
+			{ (int)QuanHam.thuongtuong, "Thượng tướng"},
+			{ (int)QuanHam.daituong, "Đại tướng"}
+		};
 
         // bang AnXa
         public enum MucDoAnXa // cái này ko hiểu lắm vì sao ko enum dc nên ông check xem nhé
@@ -162,5 +196,66 @@ namespace Project4.Common
             //    Tội phạm đặc biệt nghiêm trọng
             toiphamdacbietnghiemtrong = 4
         }
+		
+		// quan ngục
+		public enum ChucVu
+		{
+			// Giám thị
+			giamthi = 1,
+			// phó giá thị
+			phogiamthi = 2,
+			// trưởng phân trại
+			truongphantrai = 3,
+			// phó trưởng phân trại
+			photruongphantrai = 4,
+			// đội trưởng
+			doitruong = 5,
+			// phó đội trưởng
+			phodoitruong = 6,
+			// sĩ quan
+			siquan = 7,
+			// quân nhân chuyên nghiệp
+			quannhanchuyennghiep = 8,
+			// hạ sĩ quan
+			hasiquan = 9,
+			// chiến sĩ
+			chiensi = 10,
+			// công nhân viên chức
+			congnhanvienchuc = 11
+		}
+		
+		public enum QuanHam 
+		{
+			// hạ sĩ
+			hasi = 1,
+			// trung sĩ
+			trungsi = 2,
+			// thượng sĩ
+			thuongsi = 3,
+			// thiếu úy
+			thieuuy = 4,
+			// trung úy
+			trunguy = 5,
+			// thượng úy
+			thuonguy = 6,
+			// đại úy
+			daiuy = 7,
+			// thiếu tá
+			thieuta = 8,
+			//trung tá
+			trungta = 9,
+			//thượng tá
+			thuongta = 10,
+			//đại tá
+			daita = 11,
+			//thiếu tướng
+			thieutuong = 12,
+			//trung tướng
+			trungtuong = 13,
+			//thượng tá
+			thuongtuong = 14,
+			//đại tá
+			daituong = 15,
+		}
     }
 }

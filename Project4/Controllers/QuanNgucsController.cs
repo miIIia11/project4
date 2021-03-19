@@ -2,14 +2,12 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using Project4.Models;
-using System.Text.RegularExpressions;
-using Microsoft.AspNet.Identity;
-using Microsoft.AspNet.Identity.EntityFramework;
 
 namespace Project4.Controllers
 {
@@ -17,14 +15,9 @@ namespace Project4.Controllers
     {
         private ApplicationDbContext db = new ApplicationDbContext();
 
-        [Authorize(Roles = "QuanNgucTruong")]
         // GET: QuanNgucs 
         public ActionResult Index()
         {
-            if (User.Identity.GetQuanNgucId() == "")
-            {
-                return RedirectToAction("DangNhap", "TaiKhoan");
-            }
             ViewBag.Khu = db.Khu.ToList();
             return View(db.QuanNguc.ToList());
         }
@@ -78,25 +71,24 @@ namespace Project4.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "ID,TenQuanNguc,NgaySinh,QueQuan,GioiTinh,KhuID,NamCongTac,ThoiHanCongTac,CMND,ChucVu,QuanHam")] QuanNguc quanNguc)
+        public ActionResult Create([Bind(Include = "ID,TenQuanNguc,AnhNhanDien,NgaySinh,QueQuan,GioiTinh,KhuID,NamCongTac,ThoiHanCongTac,CMND,ChucVu,QuanHam")] QuanNguc quanNguc, HttpPostedFileBase file)
         {
-            var UserManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(db));
-
             if (ModelState.IsValid)
             {
                 quanNguc.ID = Guid.NewGuid();
+                string url = string.Empty;
+                quanNguc.ID = Guid.NewGuid();
+                FileUpload(file, quanNguc.ID, out url);
+                if (url == string.Empty)
+                {
+                    //error = "You must include a Featured Image for event.";
+                    //ViewBag.Error = error;
+                    ViewBag.NgaySinh = quanNguc.NgaySinh.HasValue ? quanNguc.NgaySinh.Value.ToString("MM/dd/yyyy") : null;
+                    return View(quanNguc);
+                }
+                quanNguc.AnhNhanDien = url;
                 db.QuanNguc.Add(quanNguc);
                 db.SaveChanges();
-                var newUser = new ApplicationUser();
-                var generatedEmail = RemoveUnicodeAndSpace(quanNguc.TenQuanNguc) + @"@chihoa.com";
-                newUser.UserName = generatedEmail;
-                newUser.Email = generatedEmail;
-                string password = "123456";
-                var checkUser = UserManager.Create(newUser,password);
-                if (checkUser.Succeeded)
-                {
-                    var checkRole = UserManager.AddToRole(newUser.Id ,"QuanNguc");
-                }
                 return RedirectToAction("Index");
             }
 
@@ -115,6 +107,7 @@ namespace Project4.Controllers
             {
                 return HttpNotFound();
             }
+            ViewBag.NgaySinh = quanNguc.NgaySinh.HasValue ? quanNguc.NgaySinh.Value.ToString("MM/dd/yyyy") : null;
             return View(quanNguc);
         }
 
@@ -123,14 +116,21 @@ namespace Project4.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "ID,TenQuanNguc,NgaySinh,QueQuan,GioiTinh,KhuID,NamCongTac,ThoiHanCongTac,CMND,ChucVu,QuanHam")] QuanNguc quanNguc)
+        public ActionResult Edit([Bind(Include = "ID,TenQuanNguc,AnhNhanDien,NgaySinh,QueQuan,GioiTinh,KhuID,NamCongTac,ThoiHanCongTac,CMND,ChucVu,QuanHam")] QuanNguc quanNguc, HttpPostedFileBase file)
         {
             if (ModelState.IsValid)
             {
+                string url = string.Empty;
+                FileUpload(file, quanNguc.ID, out url);
+                if (url != string.Empty)
+                {
+                    quanNguc.AnhNhanDien = url;
+                }
                 db.Entry(quanNguc).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
+            ViewBag.NgaySinh = quanNguc.NgaySinh.HasValue ? quanNguc.NgaySinh.Value.ToString("MM/dd/yyyy") : null;
             return View(quanNguc);
         }
 
@@ -168,31 +168,39 @@ namespace Project4.Controllers
             }
             base.Dispose(disposing);
         }
-
-        public static string RemoveUnicodeAndSpace(string text)
+        public void FileUpload(HttpPostedFileBase file, Guid quanNgucID, out string url)
         {
-            string[] arr1 = new string[] { "á", "à", "ả", "ã", "ạ", "â", "ấ", "ầ", "ẩ", "ẫ", "ậ", "ă", "ắ", "ằ", "ẳ", "ẵ", "ặ",
-            "đ",
-            "é","è","ẻ","ẽ","ẹ","ê","ế","ề","ể","ễ","ệ",
-            "í","ì","ỉ","ĩ","ị",
-            "ó","ò","ỏ","õ","ọ","ô","ố","ồ","ổ","ỗ","ộ","ơ","ớ","ờ","ở","ỡ","ợ",
-            "ú","ù","ủ","ũ","ụ","ư","ứ","ừ","ử","ữ","ự",
-            "ý","ỳ","ỷ","ỹ","ỵ",};
-            string[] arr2 = new string[] { "a", "a", "a", "a", "a", "a", "a", "a", "a", "a", "a", "a", "a", "a", "a", "a", "a",
-            "d",
-            "e","e","e","e","e","e","e","e","e","e","e",
-            "i","i","i","i","i",
-            "o","o","o","o","o","o","o","o","o","o","o","o","o","o","o","o","o",
-            "u","u","u","u","u","u","u","u","u","u","u",
-            "y","y","y","y","y",};
-            for (int i = 0; i < arr1.Length; i++)
+            url = string.Empty;
+            try
             {
-                text = text.Replace(arr1[i], arr2[i]);
-                text = text.Replace(arr1[i].ToUpper(), arr2[i].ToUpper());
+                if (file != null)
+                {
+                    string pic = System.IO.Path.GetFileName(file.FileName);
+                    DirectoryInfo di = Directory.CreateDirectory(Server.MapPath($"~\\Common\\Image\\QuanNgucs\\{quanNgucID}"));
+                    string path = System.IO.Path.Combine(
+                                           Server.MapPath($"~/Common/Image/QuanNgucs/{quanNgucID}"), pic);
+                    url = $"~/Common/Image/QuanNgucs/{quanNgucID}/" + pic;
+                    // file is uploaded
+                    file.SaveAs(path);
+
+                    // save the image path path to the database or you can send image 
+                    // directly to database
+                    // in-case if you want to store byte[] ie. for DB
+                    using (MemoryStream ms = new MemoryStream())
+                    {
+                        file.InputStream.CopyTo(ms);
+                        byte[] array = ms.GetBuffer();
+                    }
+
+                }
             }
-            text = Regex.Replace(text, @"\s", "");
-            text = text.ToLower();
-            return text;
+            catch (Exception ex)
+            {
+
+            }
+
+            // after successfully uploading redirect the user
+            //return RedirectToAction("actionname", "controller name");
         }
     }
 }

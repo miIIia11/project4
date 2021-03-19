@@ -10,7 +10,10 @@ namespace Project4.Models
     {
         public int ID { get; set; }
 
-        [DisplayName("Tên bệnh")]
-        public string TenBenh { get; set; }
+        [DisplayName("Mã Phạm nhân")]
+        public Guid PhamNhanID { get; set; }
+
+        [DisplayName("Ngày Chữa Trị")]
+        public int NgayChuaTri { get; set; }
     }
 }

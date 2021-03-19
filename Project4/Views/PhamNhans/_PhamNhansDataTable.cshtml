@@ -59,13 +59,23 @@
                     @Html.DisplayFor(modelItem => item.BiDanh)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.AnhNhanDien)
+                    @if (String.IsNullOrEmpty(item.AnhNhanDien))
+                    {
+                        <img src="~/Common/Image/no-image-icon-23485.png" class="img-fluid" alt="Image" width="200" height="300" />
+                    }
+                    else
+                    {
+                        <img src="@Url.Content(item.AnhNhanDien)" class="img-fluid" alt="Image" width="200" height="300" />
+                    }
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.QueQuan)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.NgaySinh)
+                    @if (item.NgaySinh.HasValue)
+                    {
+                        <p>@item.NgaySinh.Value.ToString("dd/MM/yyyy")</p>
+                    }
                 </td>
                 <td>
                     @Enum.GetName(typeof(Project4.Common.CommonConstant.GioiTinh), item.GioiTinh)

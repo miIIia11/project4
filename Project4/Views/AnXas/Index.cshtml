@@ -5,7 +5,7 @@
     Layout = "~/Views/Shared/_LayoutMain.cshtml";
 }
 <h2>Quản lý chế độ ân xá</h2>
-<br /> @Html.Partial("_AnXaSearchBar") 
+<br /> @Html.Partial("_AnXaSearchBar")
 <br /><p>@Html.ActionLink("Thêm mới", "Create")</p>
 <br /> @Html.Partial("_AnXaDataTable", Model.ToList())
 
@@ -17,7 +17,6 @@
             link = link.replace("-1", khuID);
             $('#thanhTimKiem').load(link);
         }
-
         function TimKiem() {
             var txtTenHoacMa = $("#txtTenHoacMa").text();
             var txtKhu = $("#txtKhu").val();

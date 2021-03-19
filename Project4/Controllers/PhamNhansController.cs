@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Web;
@@ -15,7 +16,7 @@ namespace Project4.Controllers
         private ApplicationDbContext db = new ApplicationDbContext();
 
         // GET: PhamNhans oh yes
-        public ActionResult Index()      
+        public ActionResult Index()
         {
             if (User.Identity.GetQuanNgucId() == "")
             {
@@ -32,14 +33,14 @@ namespace Project4.Controllers
             }
             else
             {
-                
+
             }
 
             ViewBag.ToiDanh = Common.CommonConstant.toiDanh;
             ViewBag.MucDoNguyHiem = Common.CommonConstant.mucDoNguyHiem;
 
             return View(db.PhamNhan.ToList());
-        } 
+        }
 
         public ActionResult ThanhTimKiem(string khuID)
         {
@@ -92,7 +93,7 @@ namespace Project4.Controllers
             ViewBag.GioiTinh = new SelectList(Common.CommonConstant.gioiTinh, "Key", "Value", null);
             ViewBag.ToiDanh = new SelectList(Common.CommonConstant.toiDanh, "Key", "Value", null);
             ViewBag.MucDoNguyHiem = new SelectList(Common.CommonConstant.mucDoNguyHiem, "Key", "Value", null);
-            ViewBag.IDKhu = new SelectList(db.Khu, "ID", "TenKhu" , null);
+            ViewBag.IDKhu = new SelectList(db.Khu, "ID", "TenKhu", null);
             ViewBag.PhongGiamID = new SelectList(db.PhongGiam, "ID", "TenPhong", null);
             return View();
         }
@@ -102,16 +103,28 @@ namespace Project4.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "ID,TenPhamNhan,BiDanh,AnhNhanDien,QueQuan,NgaySinh,GioiTinh,IDKhu,ToiDanh,MucDoNguyHiem,SoNgayGiamGiu,CMND,QuaTrinhGayAn,DiaDiemGayAn,PhongGiamID")] PhamNhan phamNhan)
+        public ActionResult Create([Bind(Include = "ID,TenPhamNhan,BiDanh,AnhNhanDien,QueQuan,NgaySinh,GioiTinh,IDKhu,ToiDanh,MucDoNguyHiem,SoNgayGiamGiu,CMND,QuaTrinhGayAn,DiaDiemGayAn,PhongGiamID")] PhamNhan phamNhan, HttpPostedFileBase file)
         {
-            if (ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
+                string url = string.Empty;
                 phamNhan.ID = Guid.NewGuid();
+                phamNhan.NgayVaoTrai = DateTime.Now;
+                FileUpload(file, phamNhan.ID, out url);
+                if (url == string.Empty)
+                {
+                    //error = "You must include a Featured Image for event.";
+                    //ViewBag.Error = error;
+                    ViewBag.NgaySinh = phamNhan.NgaySinh.HasValue ? phamNhan.NgaySinh.Value.ToString("MM/dd/yyyy") : null;
+                    return View(phamNhan);
+                }
+                phamNhan.AnhNhanDien = url;
+
                 db.PhamNhan.Add(phamNhan);
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-
+            ViewBag.NgaySinh = phamNhan.NgaySinh.HasValue ? phamNhan.NgaySinh.Value.ToString("MM/dd/yyyy") : null;
             return View(phamNhan);
         }
 
@@ -127,6 +140,7 @@ namespace Project4.Controllers
             {
                 return HttpNotFound();
             }
+            ViewBag.NgaySinh = phamNhan.NgaySinh.HasValue ? phamNhan.NgaySinh.Value.ToString("MM/dd/yyyy") : null;
             ViewBag.GioiTinh = new SelectList(Common.CommonConstant.gioiTinh, "Key", "Value", phamNhan.GioiTinh);
             ViewBag.ToiDanh = new SelectList(Common.CommonConstant.toiDanh, "Key", "Value", phamNhan.ToiDanh);
             ViewBag.MucDoNguyHiem = new SelectList(Common.CommonConstant.mucDoNguyHiem, "Key", "Value", phamNhan.MucDoNguyHiem);
@@ -140,14 +154,21 @@ namespace Project4.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "ID,TenPhamNhan,BiDanh,AnhNhanDien,QueQuan,NgaySinh,GioiTinh,IDKhu,ToiDanh,MucDoNguyHiem,SoNgayGiamGiu,CMND,QuaTrinhGayAn,DiaDiemGayAn,PhongGiamID")] PhamNhan phamNhan)
+        public ActionResult Edit([Bind(Include = "ID,TenPhamNhan,BiDanh,AnhNhanDien,QueQuan,NgaySinh,GioiTinh,IDKhu,ToiDanh,MucDoNguyHiem,SoNgayGiamGiu,CMND,QuaTrinhGayAn,DiaDiemGayAn,PhongGiamID,NgayVaoTrai")] PhamNhan phamNhan, HttpPostedFileBase file)
         {
             if (ModelState.IsValid)
             {
+                string url = string.Empty;
+                FileUpload(file, phamNhan.ID, out url);
+                if (url != string.Empty)
+                {
+                    phamNhan.AnhNhanDien = url;
+                }
                 db.Entry(phamNhan).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
+            ViewBag.NgaySinh = phamNhan.NgaySinh.HasValue ? phamNhan.NgaySinh.Value.ToString("MM/dd/yyyy") : null;
             return View(phamNhan);
         }
 
@@ -184,6 +205,41 @@ namespace Project4.Controllers
                 db.Dispose();
             }
             base.Dispose(disposing);
+        }
+
+        public void FileUpload(HttpPostedFileBase file, Guid phamNhanID, out string url)
+        {
+            url = string.Empty;
+            try
+            {
+                if (file != null)
+                {
+                    string pic = System.IO.Path.GetFileName(file.FileName);
+                    DirectoryInfo di = Directory.CreateDirectory(Server.MapPath($"~\\Common\\Image\\PhamNhans\\{phamNhanID}"));
+                    string path = System.IO.Path.Combine(
+                                           Server.MapPath($"~/Common/Image/PhamNhans/{phamNhanID}"), pic);
+                    url = $"~/Common/Image/PhamNhans/{phamNhanID}/" + pic;
+                    // file is uploaded
+                    file.SaveAs(path);
+
+                    // save the image path path to the database or you can send image 
+                    // directly to database
+                    // in-case if you want to store byte[] ie. for DB
+                    using (MemoryStream ms = new MemoryStream())
+                    {
+                        file.InputStream.CopyTo(ms);
+                        byte[] array = ms.GetBuffer();
+                    }
+
+                }
+            }
+            catch (Exception ex)
+            {
+
+            }
+
+            // after successfully uploading redirect the user
+            //return RedirectToAction("actionname", "controller name");
         }
     }
 }
