@@ -276,6 +276,8 @@
     <Content Include="Asserts\MasterPage1\js\datatables-demo.js" />
     <Content Include="Asserts\MasterPage1\js\script.js" />
     <Content Include="Common\Image\no-image-icon-23485.png" />
+    <Content Include="Common\Image\QuanNgucs\41415f26-51e0-4c21-b881-1221233de8c6\forest.jpg" />
+    <Content Include="Common\Image\QuanNgucs\fc0fcdcc-5b69-4fb7-b7b9-29bdc0305e61\logo.png" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\dataTables.bootstrap4.min.css" />
