@@ -1,50 +1,52 @@
-﻿@model IEnumerable<Project4.Models.PhamNhan>
-<link rel="stylesheet"  href="~/Content/tableResponsive.css"/>
-  
-<div class="scrollmenu" id="table">
-    <table class="table table-bordered">
+﻿@model IPagedList<Project4.Models.PhamNhan>
+@using PagedList.Mvc;
+@using PagedList;
+<link rel="stylesheet" href="~/Content/tableResponsive.css" />
+
+<div class="scrollmenu">
+    <table class="table table-bordered" id="table">
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.TenPhamNhan)
+                @Html.DisplayNameFor(model => model.First().TenPhamNhan)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.BiDanh)
+                @Html.DisplayNameFor(model => model.First().BiDanh)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.AnhNhanDien)
+                @Html.DisplayNameFor(model => model.First().AnhNhanDien)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.QueQuan)
+                @Html.DisplayNameFor(model => model.First().QueQuan)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.NgaySinh)
+                @Html.DisplayNameFor(model => model.First().NgaySinh)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.GioiTinh)
+                @Html.DisplayNameFor(model => model.First().GioiTinh)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.IDKhu)
+                @Html.DisplayNameFor(model => model.First().IDKhu)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.ToiDanh)
+                @Html.DisplayNameFor(model => model.First().ToiDanh)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.MucDoNguyHiem)
+                @Html.DisplayNameFor(model => model.First().MucDoNguyHiem)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.SoNgayGiamGiu)
+                @Html.DisplayNameFor(model => model.First().SoNgayGiamGiu)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.CMND)
+                @Html.DisplayNameFor(model => model.First().CMND)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.QuaTrinhGayAn)
+                @Html.DisplayNameFor(model => model.First().QuaTrinhGayAn)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.DiaDiemGayAn)
+                @Html.DisplayNameFor(model => model.First().DiaDiemGayAn)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.PhongGiamID)
+                @Html.DisplayNameFor(model => model.First().PhongGiamID)
             </th>
             <th></th>
         </tr>
@@ -74,10 +76,23 @@
                     @Html.DisplayFor(modelItem => item.IDKhu)
                 </td>
                 <td>
-                    @(((Dictionary<int, string>)ViewBag.ToiDanh)[item.ToiDanh])
+                    @if (item.ToiDanh > 0)
+                    {
+                        @Enum.GetName(typeof(Project4.Common.CommonConstant.ToiDanh), item.ToiDanh)
+                        @*@(((Dictionary<int, string>)ViewBag.ToiDanh)[item.ToiDanh]);*@
+                    }
+                    else
+                    {
+                        <p style="color: orangered">Data not found</p>
+                    }
                 </td>
                 <td>
-                    @(((Dictionary<int, string>)ViewBag.MucDoNguyHiem)[item.MucDoNguyHiem])
+                    @if (item.MucDoNguyHiem > 0)
+                    {
+                        @Enum.GetName(typeof(Project4.Common.CommonConstant.MucDoNguyHiem), item.MucDoNguyHiem)
+                        @*@(((Dictionary<int, string>)ViewBag.MucDoNguyHiem)[item.MucDoNguyHiem]);*@
+                    }
+
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.SoNgayGiamGiu)
@@ -103,3 +118,60 @@
         }
     </table>
 </div>
+
+<p style="text-align:center">
+    <div style="font-size: x-large">
+        @Html.PagedListPager(Model, i => Url.Action("TimKiem", "PhamNhans", new
+        {
+            txtTenHoacMa = Request.QueryString["txtTenHoacMa"],
+            khuID = Request.QueryString["khuID"],
+            phongID = Request.QueryString["phongID"],
+            i = Request.QueryString["i"]
+        }))
+
+    </div>
+</p>
+
+@*@Html.PagedListPager((IPagedList)Model,
+    page => Url.Action("Index", new { humanID = ViewBag.HumanID, page }), PagedListRenderOptions.EnableUnobtrusiveAjaxReplacing(PagedListRenderOptions.PageNumbersOnly,
+           new AjaxOptions
+           {
+               InsertionMode = InsertionMode.Replace,
+               HttpMethod = "Get",
+               UpdateTargetId = "targetContainer"
+           }))*@
+
+@*@Html.PagedListPager(Model, i => Url.Action("TimKiem", "PhamNhans", new
+    {
+        txtTenHoacMa = Request.QueryString["txtTenHoacMa"],
+        khuID = Request.QueryString["khuID"],
+        phongID = Request.QueryString["phongID"],
+        i = Request.QueryString["i"]
+    }))*@
+
+@*@Html.PagedListPager(Model, i => Url.Action("TimKiem", "PhamNhans", new
+    {
+        i = i,
+        txtTenHoacMa = Request.QueryString["txtTenHoacMa"],
+        khuID = Request.QueryString["khuID"],
+        phongID = Request.QueryString["phongID"]
+    }),
+    PagedListRenderOptions.EnableUnobtrusiveAjaxReplacing(new AjaxOptions() { HttpMethod = "GET", UpdateTargetId = "partialTable" }))*@
+
+
+@*@Html.PagedListPager((IPagedList)Model,
+            page => Url.Action("TimKiem", "PhamNhans", new
+            {
+                txtTenHoacMa = Request.QueryString["txtTenHoacMa"],
+                khuID = Request.QueryString["khuID"],
+                phongID = Request.QueryString["phongID"],
+                i = Request.QueryString["i"]
+            })
+            , PagedListRenderOptions.EnableUnobtrusiveAjaxReplacing(PagedListRenderOptions.PageNumbersOnly,
+            new AjaxOptions
+            {
+                InsertionMode = InsertionMode.Replace,
+                HttpMethod = "Get",
+                UpdateTargetId = "partialTable"
+            }))*@
+

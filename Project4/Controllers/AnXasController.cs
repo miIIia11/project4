@@ -6,21 +6,35 @@ using System.Linq;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
+using PagedList;
 using Project4.Models;
 
-namespace Project4.Controllers 
+namespace Project4.Controllers
 {
     public class AnXasController : Controller
     {
         private ApplicationDbContext db = new ApplicationDbContext();
 
-        // GET: AnXas  
-        public ActionResult Index()
+        // GET: AnXas   hihi4444 
+        public ActionResult Index(string tenPhamNhan, int? i)
         {
-            ViewBag.Khu = db.Khu.ToList();
+            if (string.IsNullOrEmpty(tenPhamNhan)) tenPhamNhan = "";
+            var anxaList = from a in db.AnXa
+                           join p in db.PhamNhan
+                                   on a.PhamNhanID equals p.ID
+                           where p.TenPhamNhan.Contains(tenPhamNhan)
+                           select new AnXaParam
+                           {
+                               ID = a.ID,
+                               PhamNhanID = p.TenPhamNhan,
+                               MucDoAnXa = a.MucDoAnXa,
+                               MucDoCaiTao = a.MucDoCaiTao
+                           };
 
-            ViewBag.Phong = db.PhongGiam.ToList();
-            return View(db.AnXa.ToList());
+            int pageSize = 5; 
+            int pageNumber = (i ?? 1);
+            return View(anxaList.OrderBy(t => t.PhamNhanID)
+                .ToPagedList(pageNumber, pageSize));
         }
 
         public ActionResult ThanhTimKiem(string khuID)
@@ -130,7 +144,7 @@ namespace Project4.Controllers
         // GET: AnXas/Delete/5
         public ActionResult Delete(int? id)
         {
-            if (id == null) 
+            if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }

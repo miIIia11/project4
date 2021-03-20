@@ -1,33 +1,171 @@
-﻿@model IEnumerable<Project4.Models.PhamNhan>
-
+﻿@model IPagedList<Project4.Models.PhamNhanParams>
+@using PagedList.Mvc;
+@using PagedList;
+<link rel="stylesheet" href="~/Content/tableResponsive.css" />
 @{
     ViewBag.Title = "Index";
     Layout = "~/Views/Shared/_LayoutMain.cshtml";
 }
 <h2>Quản lý Phạm nhân</h2>
-
 <br /> @Html.Partial("_PhamNhansSearchBar")
 <br /><p>@Html.ActionLink("Thêm mới", "Create")</p>
-<br /> @Html.Partial("_PhamNhansDataTable", Model.ToList())
+<div id="partialTable">
+    <div class="scrollmenu">
+        <table class="table table-bordered" id="table">
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.First().TenPhamNhan)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.First().BiDanh)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.First().AnhNhanDien)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.First().QueQuan)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.First().NgaySinh)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.First().GioiTinh)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.First().IDKhu)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.First().PhongGiamID)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.First().ToiDanh)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.First().MucDoNguyHiem)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.First().SoNgayGiamGiu)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.First().CMND)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.First().QuaTrinhGayAn)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.First().DiaDiemGayAn)
+                </th>
+                <th></th>
+            </tr>
+            @if (Model.Count() < 1)
+            {
+                <tr>
+                    <td colspan="15">
+                        <p style="color: red; text-align: center">Không tìm thấy bản ghi nào</p>
+                    </td>
+                </tr>
+            }
+            else
+            {
+                foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.TenPhamNhan)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.BiDanh)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.AnhNhanDien)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.QueQuan)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.NgaySinh)
+                        </td>
+                        <td>
+                            @Enum.GetName(typeof(Project4.Common.CommonConstant.GioiTinh), item.GioiTinh)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.IDKhu)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.PhongGiamID)
+                        </td>
+                        <td>
+                            @if (item.ToiDanh > 0)
+                            {
+                                @Enum.GetName(typeof(Project4.Common.CommonConstant.ToiDanh), item.ToiDanh)
+                                @*@(((Dictionary<int, string>)ViewBag.ToiDanh)[item.ToiDanh]);*@
+                            }
+                            else
+                            {
+                                <p style="color: orangered">Data not found</p>
+                            }
+                        </td>
+                        <td>
+                            @if (item.MucDoNguyHiem > 0)
+                            {
+                                @Enum.GetName(typeof(Project4.Common.CommonConstant.MucDoNguyHiem), item.MucDoNguyHiem)
+                                @*@(((Dictionary<int, string>)ViewBag.MucDoNguyHiem)[item.MucDoNguyHiem]);*@
+                            }
+
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.SoNgayGiamGiu)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.CMND)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.QuaTrinhGayAn)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.DiaDiemGayAn)
+                        </td>
+                        <td>
+                            @Html.ActionLink("Chỉnh sửa", "Edit", new { id = item.ID }) |
+                            @Html.ActionLink("Chi tiết", "Details", new { id = item.ID }) |
+                            @Html.ActionLink("Xóa", "Delete", new { id = item.ID })
+                        </td>
+                    </tr>
+                }
+            }
+        </table>
+    </div>
+    <p style="text-align:center">
+        <div style="font-size: x-large; padding: 20px">
+            @Html.PagedListPager(Model, i => Url.Action("Index", "PhamNhans", new
+            { 
+                  i, txtTenHoacMa = Request.QueryString["txtTenHoacMa"],
+                  khuID = Request.QueryString["khuID"],
+                  phongID = Request.QueryString["phongID"]
+            }))
+        </div>
+    </p>
+</div>
 
 @section scripts{
     <script>
-        function LoadLaiThanhTK() {
-            var khuID = $("#txtKhu").val();
-            var link = '@Url.Action("ThanhTimKiem", "PhamNhans", new { khuID = "-1" })';
-            link = link.replace("-1", khuID);
-            $('#thanhTimKiem').load(link);
-        }
-
-        function TimKiem() {
-            var txtTenHoacMa = $("#txtTenHoacMa").text();
-            var txtKhu = $("#txtKhu").val();
-            var txtPhong = $("#txtPhong").val();
-            var link = '@Html.Raw(Url.Action("TimKiem", "PhamNhans", new { @txtTenHoacMa = "-1" , @khuID = "-2" , @phongID = "-3"  }))';
-            link = link.replace("-1", txtTenHoacMa);
-            link = link.replace("-2", txtKhu);
-            link = link.replace("-3", txtPhong);
-            $('#table').load(link);
-        }
-    </script>    
+            function LoadLaiThanhTK() {
+                var khuID = $("#txtKhu").val();
+                var link = '@Url.Action("ThanhTimKiem", "PhamNhans", new { khuID = "-1" })';
+                link = link.replace("-1", khuID);
+                $('#thanhTimKiem').load(link);
+            }
+            @*function TimKiem() {
+                //var txtTenHoacMa = $("#txtTenHoacMa").text();
+                var txtTenHoacMa = $("#txtTenHoacMa").val();
+                var txtKhu = $("#txtKhu").val();
+                var txtPhong = $("#txtPhong").val();
+                var link = '@Html.Raw(Url.Action("TimKiem", "PhamNhans", new { @txtTenHoacMa = "-1" , @khuID = "-2" , @phongID = "-3"  }))';
+                link = link.replace("-1", txtTenHoacMa);
+                link = link.replace("-2", txtKhu);
+                link = link.replace("-3", txtPhong);
+                $('#table').load(link);
+            }*@
+    </script>
 }
+

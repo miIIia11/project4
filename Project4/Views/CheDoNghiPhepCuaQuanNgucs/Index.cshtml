@@ -1,10 +1,84 @@
-﻿@model IEnumerable<Project4.Models.CheDoNghiPhepCuaQuanNguc>
+﻿@model IPagedList<Project4.Models.NghiPhepQuanNgucParams>
+@using PagedList.Mvc;
+@using PagedList;
 
 @{
     ViewBag.Title = "Index";
     Layout = "~/Views/Shared/_LayoutMain.cshtml";
 }
-<h2>Quản lí chế độ nghỉ phép</h2> 
-<br /> @Html.Partial("_NghiPhepQuanNgucsSearchBar")
+<h2>Quản lí chế độ nghỉ phép</h2>
+@using (Html.BeginForm("Index", "CheDoNghiPhepCuaQuanNgucs", FormMethod.Get))
+{
+    <div class="container">
+        <div class="row">
+            <div class="col-md-4">
+                @Html.TextBox("tenQuanNguc", "", null, new
+                {
+                    @class = "form-control",
+                    @placeholder = "Tìm kiếm theo tên quản ngục"
+                })
+            </div>
+            <div class="col-md-1">
+                <button class="btn btn-primary" type="submit" onclick="TimKiem()">
+                    <i class="fa fa-search"></i>
+                </button>
+            </div>
+            <div class="col-md-7">
+            </div>
+        </div>
+    </div>
+}
 <br /><p>@Html.ActionLink("Thêm mới", "Create")</p>
-<br /> @Html.Partial("_NghiPhepQuanNgucsDataTable", Model.ToList())
+<table class="table table-striped" id="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.First().TenQuanNguc)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.First().SoNgayNghi)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.First().LyDoNghi)
+        </th>
+        <th></th>
+    </tr>
+
+    @if (Model.Count() < 1)
+    {
+        <tr>
+            <td colspan="4">
+                <p style="color: red; text-align: center">Không tìm thấy bản ghi nào</p>
+            </td>
+        </tr>
+    }
+    else
+    {
+        foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.TenQuanNguc)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.SoNgayNghi)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.LyDoNghi)
+                </td>
+                <td>
+                    @Html.ActionLink("Chỉnh sửa", "Edit", new { id = item.ID }) |
+                    @Html.ActionLink("Chi tiết", "Details", new { id = item.ID }) |
+                    @Html.ActionLink("Xóa", "Delete", new { id = item.ID })
+                </td>
+            </tr>
+        }
+    }
+</table> 
+<p style="text-align:center">
+    <div style="font-size: x-large; padding: 20px">
+        @Html.PagedListPager(Model, i => Url.Action("Index", "CheDoNghiPhepCuaQuanNgucs", new
+          {
+               tenQuanNguc = Request.QueryString["tenQuanNguc"], i
+          }))
+    </div>
+</p>

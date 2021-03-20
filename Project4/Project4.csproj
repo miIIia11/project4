@@ -50,6 +50,12 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
+    <Reference Include="PagedList, Version=1.17.0.0, Culture=neutral, PublicKeyToken=abbb863e9397c5e1, processorArchitecture=MSIL">
+      <HintPath>..\packages\PagedList.1.17.0.0\lib\net40\PagedList.dll</HintPath>
+    </Reference>
+    <Reference Include="PagedList.Mvc, Version=4.5.0.0, Culture=neutral, PublicKeyToken=abbb863e9397c5e1, processorArchitecture=MSIL">
+      <HintPath>..\packages\PagedList.Mvc.4.5.0.0\lib\net40\PagedList.Mvc.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
@@ -187,18 +193,24 @@
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\AnXa.cs" />
+    <Compile Include="Models\AnXaParam.cs" />
     <Compile Include="Models\Benh.cs" />
     <Compile Include="Models\CheDoNghiPhepCuaQuanNguc.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\Khu.cs" />
     <Compile Include="Models\LaoDongCongIch.cs" />
+    <Compile Include="Models\LaoDongCongIchesParam.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
+    <Compile Include="Models\NghiPhepQuanNgucParams.cs" />
     <Compile Include="Models\PhamNhan.cs" />
+    <Compile Include="Models\PhamNhanParams.cs" />
     <Compile Include="Models\PhongGiam.cs" />
     <Compile Include="Models\QuanLyBenhTat.cs" />
     <Compile Include="Models\QuanNguc.cs" />
+    <Compile Include="Models\QuanNgucsParam.cs" />
     <Compile Include="Models\TaiKhoan.cs" />
     <Compile Include="Models\ThamGui.cs" />
+    <Compile Include="Models\ThamGuiParam.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
   </ItemGroup>
@@ -278,6 +290,7 @@
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\dataTables.bootstrap4.min.css" />
+    <Content Include="Content\PagedList.css" />
     <Content Include="Content\popUp.css" />
     <Content Include="Content\SearchBar.css" />
     <Content Include="Content\tableResponsive.css" />
@@ -453,7 +466,6 @@
     <Content Include="Views\Benhs\Index.cshtml" />
     <Content Include="Views\Benhs\_BenhDataTable.cshtml" />
     <Content Include="Views\Benhs\_BenhSearchBar.cshtml" />
-    <Content Include="Views\QuanNgucs\_QuanNgucsPopupDetail.cshtml" />
     <Content Include="Views\QuanNgucs\_Details.cshtml" />
   </ItemGroup>
   <ItemGroup>
