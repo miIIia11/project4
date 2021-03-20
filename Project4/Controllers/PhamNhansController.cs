@@ -17,7 +17,7 @@ namespace Project4.Controllers
         private ApplicationDbContext db = new ApplicationDbContext();
 
         // GET: PhamNhans oh yes
-        public ActionResult Index()
+        public ActionResult Index(string txtTenHoacMa, string khuID, string phongID, int? i)
         {
             var khu = db.Khu.ToList();
             if (khu != null)
@@ -37,7 +37,6 @@ namespace Project4.Controllers
             }
             else
             {
-
             }
             //search  
             int khuid = 0, phongid = 0;
@@ -79,14 +78,14 @@ namespace Project4.Controllers
                                    DiaDiemGayAn = p.DiaDiemGayAn,
                                    PhongGiamID = ph.TenPhong,
                                };
-            int pageSize = 5;
-            int pageNumber = (i ?? 1); 
+            int pageSize = 5; 
+            int pageNumber = (i ?? 1);
 
             ViewBag.ToiDanh = Common.CommonConstant.toiDanh;
             ViewBag.MucDoNguyHiem = Common.CommonConstant.mucDoNguyHiem;
-
-            return View(db.PhamNhan.ToList());
+            return View(listPhamNhan.OrderBy(p => p.TenPhamNhan).ToPagedList(pageNumber, pageSize));
         }
+
 
         public ActionResult ThanhTimKiem(string khuID)
         {
@@ -142,8 +141,8 @@ namespace Project4.Controllers
             return View(phamNhan);
         }
 
-        // GET: PhamNhans/Create
-        public ActionResult Create()
+        // GET: PhamNhans/Create 2222D
+        public ActionResult Create() 
         {
             ViewBag.GioiTinh = new SelectList(Common.CommonConstant.gioiTinh, "Key", "Value", null);
             ViewBag.ToiDanh = new SelectList(Common.CommonConstant.toiDanh, "Key", "Value", null);
@@ -160,7 +159,7 @@ namespace Project4.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "ID,TenPhamNhan,BiDanh,AnhNhanDien,QueQuan,NgaySinh,GioiTinh,IDKhu,ToiDanh,MucDoNguyHiem,SoNgayGiamGiu,CMND,QuaTrinhGayAn,DiaDiemGayAn,PhongGiamID")] PhamNhan phamNhan, HttpPostedFileBase file)
         {
-            if (!ModelState.IsValid)
+            if (ModelState.IsValid) 
             {
                 string url = string.Empty;
                 phamNhan.ID = Guid.NewGuid();

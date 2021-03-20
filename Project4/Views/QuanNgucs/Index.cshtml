@@ -42,6 +42,9 @@
                 @Html.DisplayNameFor(model => model.First().TenQuanNguc)
             </th>
             <th>
+                @Html.DisplayNameFor(model => model.First().AnhNhanDien)
+            </th>
+            <th>
                 @Html.DisplayNameFor(model => model.First().NgaySinh)
             </th>
             <th>
@@ -87,7 +90,20 @@
                         @Html.DisplayFor(modelItem => item.TenQuanNguc)
                     </td>
                     <td>
-                        @Html.DisplayFor(modelItem => item.NgaySinh)
+                        @if (String.IsNullOrEmpty(item.AnhNhanDien))
+                        {
+                            <img src="~/Common/Image/no-image-icon-23485.png" class="img-fluid" alt="Image" width="200" height="300" />
+                        }
+                        else
+                        {
+                            <img src="@Url.Content(item.AnhNhanDien)" class="img-fluid" alt="Image" width="200" height="300" />
+                        }
+                    </td>
+                    <td>
+                        @if (item.NgaySinh.HasValue)
+                        {
+                            <p>@item.NgaySinh.Value.ToString("dd/MM/yyyy")</p>
+                        }
                     </td>
                     <td>
                         @Html.DisplayFor(modelItem => item.QueQuan)
@@ -121,15 +137,16 @@
                 </tr>
             }
         }
-    </table> 
+    </table>
 </div>
 <p style="text-align:center">
     <div style="font-size: x-large; padding: 20px">
         @Html.PagedListPager(Model, i => Url.Action("Index", "QuanNgucs", new
         {
-           i, tenQuanNguc = Request.QueryString["tenQuanNguc"],
+           i,
+            tenQuanNguc = Request.QueryString["tenQuanNguc"],
            khuID = Request.QueryString["khuID"]
-        })) 
+        }))
     </div>
 </p>
 

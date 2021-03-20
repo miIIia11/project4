@@ -22,8 +22,8 @@ namespace Project4.Models
         [DisplayName("Quê quán")]
         public string QueQuan { get; set; }
 
-        [DisplayName("Ngày sinh")]
-        public DateTime NgaySinh { get; set; }
+        [DisplayName("Ngày sinh")] 
+        public DateTime? NgaySinh { get; set; }
 
         [DisplayName("Giới tính")]
         public int GioiTinh { get; set; } //enum

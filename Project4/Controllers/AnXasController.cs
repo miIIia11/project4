@@ -30,12 +30,11 @@ namespace Project4.Controllers
                                MucDoAnXa = a.MucDoAnXa,
                                MucDoCaiTao = a.MucDoCaiTao
                            };
-
-            int pageSize = 5; 
+            int pageSize = 5;
             int pageNumber = (i ?? 1);
-            return View(anxaList.OrderBy(t => t.PhamNhanID)
-                .ToPagedList(pageNumber, pageSize));
+            return View(anxaList.OrderBy(t => t.PhamNhanID).ToPagedList(pageNumber, pageSize));
         }
+
         [HttpGet]
         public JsonResult getAllAnXa(string txtSearch, int? page)
         {

@@ -14,7 +14,7 @@ namespace Project4.Models
         public string TenQuanNguc { get; set; }
 
         [DisplayName("Ngày sinh")] 
-        public DateTime NgaySinh { get; set; }
+        public DateTime? NgaySinh { get; set; }
 
         [DisplayName("Quê quán")]
         public string QueQuan { get; set; }
@@ -39,5 +39,8 @@ namespace Project4.Models
 
         [DisplayName("Quân hàm")]
         public int QuanHam { get; set; } //enum
+
+        [DisplayName("Ảnh nhận dạng")]
+        public string AnhNhanDien { get; set; }
     }
 }
