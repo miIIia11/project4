@@ -136,3 +136,6 @@ D:\Project4\project4\Project4\obj\Debug\Project4.csproj.CoreCompileInputs.cache
 D:\Project4\project4\Project4\obj\Debug\Project4.csproj.CopyComplete
 D:\Project4\project4\Project4\obj\Debug\Project4.dll
 D:\Project4\project4\Project4\obj\Debug\Project4.pdb
+E:\Project4\Project4\project4\Project4\obj\Debug\Project4.csprojResolveAssemblyReference.cache
+E:\Project4\Project4\project4\Project4\obj\Debug\Project4.Migrations.suabangBenh.resources
+E:\Project4\Project4\project4\Project4\obj\Debug\Project4.csproj.GenerateResource.Cache
