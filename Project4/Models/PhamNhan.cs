@@ -23,7 +23,7 @@ namespace Project4.Models
         public string QueQuan { get; set; }
 
         [DisplayName("Ngày sinh")]
-        public DateTime NgaySinh { get; set; }
+        public DateTime? NgaySinh { get; set; }
 
         [DisplayName("Giới tính")]
         public int GioiTinh { get; set; } //enum
@@ -51,6 +51,9 @@ namespace Project4.Models
 
         [DisplayName("Phòng giam")]
         public int PhongGiamID { get; set; }
+
+        [DisplayName("Ngày vào trại")]
+        public DateTime? NgayVaoTrai { get; set; }
 
     }
 }

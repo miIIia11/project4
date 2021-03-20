@@ -4,18 +4,26 @@
     ViewBag.Title = "Edit";
     Layout = "~/Views/Shared/_LayoutMain.cshtml";
 }
-
+<link href="https://cdn.datatables.net/1.10.20/css/dataTables.bootstrap4.min.css" rel="stylesheet" crossorigin="anonymous" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/js/all.min.js" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.15.1/moment.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.7.14/js/bootstrap-datetimepicker.min.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.7.14/css/bootstrap-datetimepicker.min.css">
 <h2>Edit</h2>
 
-@using (Html.BeginForm())
+@using (Html.BeginForm("Edit", "QuanNgucs", FormMethod.Post, new { enctype = "multipart/form-data" }))
 {
     @Html.AntiForgeryToken()
-    
+
     <div class="form-horizontal">
         <h4>QuanNguc</h4>
         <hr />
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
         @Html.HiddenFor(model => model.ID)
+        @Html.HiddenFor(model => model.AnhNhanDien)
 
         <div class="form-group">
             @Html.LabelFor(model => model.TenQuanNguc, htmlAttributes: new { @class = "control-label col-md-2" })
@@ -26,10 +34,29 @@
         </div>
 
         <div class="form-group">
+            @Html.LabelFor(model => model.AnhNhanDien, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @*@Html.EditorFor(model => model.AnhNhanDien, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.AnhNhanDien, "", new { @class = "text-danger" })*@
+                <input class="form-control" type="file" name="file" id="file" style="width: 100%;" accept="image/*" />
+            </div>
+        </div>
+
+        <div class="form-group">
             @Html.LabelFor(model => model.NgaySinh, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.NgaySinh, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.NgaySinh, "", new { @class = "text-danger" })
+                @*@Html.EditorFor(model => model.NgaySinh, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.NgaySinh, "", new { @class = "text-danger" })*@
+                <div class='col-sm-6'>
+                    <div class="form-group">
+                        <div class='input-group date' id='ngaySinh'>
+                            <input type='text' class="form-control" name="NgaySinh" value="@ViewBag.NgaySinh" />
+                            <span class="input-group-addon">
+                                <span class="glyphicon glyphicon-calendar"></span>
+                            </span>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
 
@@ -108,3 +135,19 @@
 <div>
     @Html.ActionLink("Back to List", "Index")
 </div>
+@section scripts {
+    @Scripts.Render("~/bundles/jquery")
+    <script type="text/javascript" src="~/Scripts/moment.min.js"></script>
+    <script type="text/javascript" src="~/Scripts/bootstrap.min.js"></script>
+    <script type="text/javascript" src="~/Scripts/bootstrap-datetimepicker.js"></script>
+
+    <script type="text/javascript">
+        $(function () {
+            $('#ngaySinh').datetimepicker({
+                format: 'L',
+                minDate: new Date('1940-1-1')
+            });
+
+        });
+    </script>
+}

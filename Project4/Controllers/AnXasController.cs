@@ -36,42 +36,74 @@ namespace Project4.Controllers
             return View(anxaList.OrderBy(t => t.PhamNhanID)
                 .ToPagedList(pageNumber, pageSize));
         }
-
-        public ActionResult ThanhTimKiem(string khuID)
+        [HttpGet]
+        public JsonResult getAllAnXa(string txtSearch, int? page)
         {
-            ViewBag.Khu = db.Khu.ToList();
-            ViewBag.SelectedKhu = khuID;
-            int idKhu = int.Parse(khuID);
-            ViewBag.Phong = db.PhongGiam.Where(w => w.KhuID == idKhu).ToList();
-
-            return PartialView("_AnXaSearchBar");
-        }
-
-        public ActionResult TimKiem(string txtTenHoacMa, string khuID, string phongID)
-        {
-            IQueryable<PhamNhan> listPhamNhan = db.PhamNhan;
-            List<AnXa> listAnXa = db.AnXa.ToList();
-            if (txtTenHoacMa.Length == 5)
+            var data = (from s in db.AnXa select s);
+            if (!String.IsNullOrEmpty(txtSearch))
             {
-                //listPhamNhan = db.PhamNhan.Where(w => w. == txtTenOrMa);
+                ViewBag.txtSearch = txtSearch;
+                data = data.Where(s => s.PhamNhanID.ToString().Contains(txtSearch));
+            }
+
+            if (page > 0)
+            {
+                page = page;
             }
             else
             {
-                listPhamNhan = listPhamNhan.Where(w => w.TenPhamNhan.Contains(txtTenHoacMa));
+                page = 1;
             }
-            var IDkhu = int.Parse(khuID);
-            listPhamNhan = listPhamNhan.Where(w => w.IDKhu == IDkhu);
-            if (phongID != string.Empty || phongID != "null")
-            {
-                var IDphong = int.Parse(phongID);
-                listPhamNhan = listPhamNhan.Where(w => w.PhongGiamID == IDphong);
-            }
-            foreach (var item in listPhamNhan)
-            {
-                listAnXa.Add(listAnXa.FirstOrDefault(f => f.PhamNhanID == item.ID));
-            }
-            return PartialView("_AnXaDataTable", listAnXa);
+            int start = (int)(page - 1) * 3;
+
+            ViewBag.pageCurrent = page;
+            int totalPage = data.Count();
+            float totalNumsize = (totalPage / (float)3);
+            int numSize = (int)Math.Ceiling(totalNumsize);
+            ViewBag.numSize = numSize;
+            var dataPost = data.OrderByDescending(x => x.ID).Skip(start).Take(3);
+            List<AnXa> listAnXa = new List<AnXa>();
+            listAnXa = dataPost.ToList();
+            // return Json(listPost);
+            return Json(new { data = listAnXa, pageCurrent = page, numSize = numSize }, JsonRequestBehavior.AllowGet);
         }
+
+
+        //public ActionResult ThanhTimKiem(string khuID)
+        //{
+        //    ViewBag.Khu = db.Khu.ToList();
+        //    ViewBag.SelectedKhu = khuID;
+        //    int idKhu = int.Parse(khuID);
+        //    ViewBag.Phong = db.PhongGiam.Where(w => w.KhuID == idKhu).ToList();
+
+        //    return PartialView("_AnXaSearchBar");
+        //}
+
+        //public ActionResult TimKiem(string txtTenHoacMa, string khuID, string phongID)
+        //{
+        //    IQueryable<PhamNhan> listPhamNhan = db.PhamNhan;
+        //    List<AnXa> listAnXa = db.AnXa.ToList();
+        //    if (txtTenHoacMa.Length == 5)
+        //    {
+        //        //listPhamNhan = db.PhamNhan.Where(w => w. == txtTenOrMa);
+        //    }
+        //    else
+        //    {
+        //        listPhamNhan = listPhamNhan.Where(w => w.TenPhamNhan.Contains(txtTenHoacMa));
+        //    }
+        //    var IDkhu = int.Parse(khuID);
+        //    listPhamNhan = listPhamNhan.Where(w => w.IDKhu == IDkhu);
+        //    if (phongID != string.Empty || phongID != "null")
+        //    {
+        //        var IDphong = int.Parse(phongID);
+        //        listPhamNhan = listPhamNhan.Where(w => w.PhongGiamID == IDphong);
+        //    }
+        //    foreach (var item in listPhamNhan)
+        //    {
+        //        listAnXa.Add(listAnXa.FirstOrDefault(f => f.PhamNhanID == item.ID));
+        //    }
+        //    return PartialView("_AnXaDataTable", listAnXa);
+        //}
         // GET: AnXas/Details/5
         public ActionResult Details(int? id)
         {
