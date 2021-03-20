@@ -1,22 +1,24 @@
 ﻿@model IEnumerable<Project4.Models.QuanNguc>
-
-
+@using (Html.BeginForm("Index", "QuanNgucs", FormMethod.Get))
+{
     <div class="container">
-        <div class="row"> 
-            <div class="col-md-3">
-                <input type="text" name="txtTenHoacMa" class="form-control" placeholder="Tìm kiếm">
+        <div class="row">
+            <div class="col-md-4">
+                @Html.TextBox("tenQuanNguc", "", null, new
+                {
+                    @class = "form-control",
+                    @placeholder = "Tìm kiếm theo tên quản ngục"
+                })
             </div>
             <div class="col-md-2">
-                @Html.DropDownList("khuID", new SelectList(ViewBag.Khu, "ID", "TenKhu", ViewBag.SelectedKhu), new { @class = "form-control", @id = "txtKhu" })
-            </div>
-            <div class="col-md-3"> 
-                <input type="text" class="form-control" placeholder="Tìm kiếm">
+                @Html.DropDownList("khuID", new SelectList(ViewBag.Khu, "ID", "TenKhu"
+                     , ViewBag.SelectedKhu), new { @class = "form-control", @id = "txtKhu" })
             </div>
             <div class="col-md-2">
                 @Html.DropDownList("txtKhu", new SelectList(ViewBag.Khu, "ID", "TenKhu"), new { @class = "form-control" })
             </div> 
             <div class="col-md-1">
-                <button class="btn btn-primary" onclick="TimKiem()" >
+                <button class="btn btn-primary" type="submit">
                     <i class="fa fa-search"></i>
                 </button>
             </div>
@@ -24,5 +26,5 @@
             </div>
         </div>
     </div>
-
+}
 

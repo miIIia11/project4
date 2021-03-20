@@ -123,8 +123,6 @@ namespace Project4.Common
             bonnam = 8
         }
 
-
-
         // giờ làm thé nào thêm dấu cách vs
 
         public enum MucDoCaiTao
@@ -135,7 +133,6 @@ namespace Project4.Common
             yeu = 4,
             kem = 5
         }
-
 
         //Bang lao dong cong ich
         public enum KhuVucLamViec
@@ -168,7 +165,7 @@ namespace Project4.Common
             nam = 1,
             nu = 2
         }
-
+         
         public enum ToiDanh
         {
             toihiepdamnguoiduoimuoisautuoi = 1,

@@ -6,17 +6,19 @@ using System.Linq;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
+using PagedList;
 using Project4.Models;
 
-namespace Project4.Controllers 
+namespace Project4.Controllers
 {
     public class CheDoNghiPhepCuaQuanNgucsController : Controller
     {
         private ApplicationDbContext db = new ApplicationDbContext();
 
-        // GET: CheDoNghiPhepCuaQuanNgucs
-        public ActionResult Index()
+        // GET: CheDoNghiPhepCuaQuanNgucs 
+        public ActionResult Index(string tenQuanNguc, int? i)
         {
+<<<<<<< HEAD
             if (User.Identity.GetQuanNgucId() == "")
             {
                 return RedirectToAction("DangNhap", "TaiKhoan");
@@ -24,6 +26,21 @@ namespace Project4.Controllers
             var khuList = db.Khu.ToList();
             ViewBag.KhuQuanLi = new SelectList(khuList, "ID", "ID"); 
             return View(db.CheDoNghiPhepCuaQuanNguc.ToList());
+=======
+            if (string.IsNullOrEmpty(tenQuanNguc)) tenQuanNguc = "";
+            var nghiphepList = from c in db.CheDoNghiPhepCuaQuanNguc
+                               join q in db.QuanNguc
+                                    on c.QuanNgucID equals q.ID
+                               where q.TenQuanNguc.Contains(tenQuanNguc)
+                               select new NghiPhepQuanNgucParams
+                               {
+                                   ID = c.ID,
+                                   TenQuanNguc = q.TenQuanNguc,
+                                   SoNgayNghi = c.SoNgayNghi,
+                                   LyDoNghi = c.LyDoNghi
+                               }; 
+            return View(nghiphepList.OrderBy(c => c.TenQuanNguc).ToPagedList(i ?? 1, 7));
+>>>>>>> 1439f1cc4c1ae0c0eac42faa59d45066190de158
         }
 
         // GET: CheDoNghiPhepCuaQuanNgucs/Details/5
@@ -121,7 +138,7 @@ namespace Project4.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Edit([Bind(Include = "ID,QuanNgucID,SoNgayNghi,LyDoNghi")] CheDoNghiPhepCuaQuanNguc cheDoNghiPhepCuaQuanNguc, string[] phongName, string[] QuanNgucDamNhiem)
         {
-            if (ModelState.IsValid) 
+            if (ModelState.IsValid)
             {
                 db.Entry(cheDoNghiPhepCuaQuanNguc).State = EntityState.Modified;
                 for (int i = 0; i < phongName.Length; i++)

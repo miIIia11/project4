@@ -1,33 +1,130 @@
-﻿@model IEnumerable<Project4.Models.ThamGui>
-
+﻿@model IPagedList<Project4.Models.ThamGuiParam>
+@using PagedList.Mvc;
+@using PagedList;
 @{
     ViewBag.Title = "Index";
     Layout = "~/Views/Shared/_LayoutMain.cshtml";
 }
 
 <h2>Thông tin hỏi thăm của phạm nhân</h2>
-<br /> @Html.Partial("_ThamGuisSearchBar")
-<br /><p>@Html.ActionLink("Thêm mới", "Create")</p>
-<br /> @Html.Partial("_ThamGuisDataTable")
 
-@section scripts{
-    <script>
-        function LoadLaiThanhTK() {
-            var khuID = $("#txtKhu").val();
-            var link = '@Url.Action("ThanhTimKiem", "AnXas", new { khuID = "-1" })';
-            link = link.replace("-1", khuID);
-            $('#thanhTimKiem').load(link);
-        }
 
-        function TimKiem() {
-            var txtTenHoacMa = $("#txtTenHoacMa").text();
-            var txtKhu = $("#txtKhu").val();
-            var txtPhong = $("#txtPhong").val();
-            var link = '@Html.Raw(Url.Action("TimKiem", "AnXas", new { @txtTenHoacMa = "-1" , @khuID = "-2" , @phongID = "-3"  }))';
-            link = link.replace("-1", txtTenHoacMa);
-            link = link.replace("-2", txtKhu);
-            link = link.replace("-3", txtPhong);
-            $('#table').load(link);
-        }
-    </script>
+@using (Html.BeginForm("Index", "ThamGuis", FormMethod.Get))
+{
+    <div class="container" id="thanhTimKiem">
+        <div class="row">
+            <div class="col-md-4">
+                @Html.TextBox("tenPhamNhan", "", null, new
+                {
+                    @class = "form-control",
+                    @placeholder = "Tìm kiếm theo tên phạm nhân"
+                })
+            </div>
+            <div class="col-md-1">
+                <button class="btn btn-primary" onclick="TimKiem()">
+                    <i class="fa fa-search"></i>
+                </button>
+            </div>
+            <div class="col-md-7">
+            </div>
+        </div>
+    </div>
 }
+<br /><p>@Html.ActionLink("Thêm mới", "Create")</p>
+<table class="table table-striped">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.First().PhamNhanID)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.First().QuanNgucID)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.First().KeHoachThamGui)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.First().NgayThamGui)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.First().ThongTinNguoiThamHoi)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.First().SoLanThamHoi)
+        </th>
+        <th></th>
+    </tr>
+
+    @if (Model.Count() < 1)
+    {
+        <tr>
+            <td colspan="7">
+                <p style="color: red; text-align: center">Không tìm thấy bản ghi nào</p>
+            </td>
+        </tr>
+    }
+    else
+    {
+        foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.PhamNhanID)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.QuanNgucID)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.KeHoachThamGui)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.NgayThamGui)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ThongTinNguoiThamHoi)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.SoLanThamHoi)
+                </td>
+                <td>
+                    @Html.ActionLink("Chỉnh sửa", "Edit", new { id = item.ID }) |
+                    @Html.ActionLink("Chi tiết", "Details", new { id = item.ID }) |
+                    @Html.ActionLink("Xóa", "Delete", new { id = item.ID })
+                </td>
+            </tr>
+        }
+    }
+</table>
+<p style="text-align:center">
+    <div style="font-size: x-large; padding: 20px">
+        @Html.PagedListPager(Model, i => Url.Action("Index", "ThamGuis", new
+           {
+               tenPhamNhan = Request.QueryString["tenPhamNhan"],
+            i
+           }))
+    </div>
+</p>
+
+
+
+
+@*@section scripts{
+        <script>
+            function LoadLaiThanhTK() {
+                var khuID = $("#txtKhu").val();
+                var link = '@Url.Action("ThanhTimKiem", "AnXas", new { khuID = "-1" })';
+                link = link.replace("-1", khuID);
+                $('#thanhTimKiem').load(link);
+            }
+
+            function TimKiem() {
+                var txtTenHoacMa = $("#txtTenHoacMa").text();
+                var txtKhu = $("#txtKhu").val();
+                var txtPhong = $("#txtPhong").val();
+                var link = '@Html.Raw(Url.Action("TimKiem", "AnXas", new { @txtTenHoacMa = "-1" , @khuID = "-2" , @phongID = "-3"  }))';
+                link = link.replace("-1", txtTenHoacMa);
+                link = link.replace("-2", txtKhu);
+                link = link.replace("-3", txtPhong);
+                $('#table').load(link);
+            }
+        </script>
+    }*@

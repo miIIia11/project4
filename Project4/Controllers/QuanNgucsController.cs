@@ -7,6 +7,7 @@ using System.Linq;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
+using PagedList;
 using Project4.Models;
 
 namespace Project4.Controllers
@@ -16,10 +17,41 @@ namespace Project4.Controllers
         private ApplicationDbContext db = new ApplicationDbContext();
 
         // GET: QuanNgucs 
-        public ActionResult Index()
+        public ActionResult Index(string tenQuanNguc, string khuID, int? i)
         {
-            ViewBag.Khu = db.Khu.ToList();
-            return View(db.QuanNguc.ToList());
+            ViewBag.Khu = db.Khu.ToList(); 
+            int _khuid = 0;
+            if (string.IsNullOrEmpty(khuID)) _khuid = 1;
+            else _khuid = Convert.ToInt32(khuID);
+
+            if (string.IsNullOrEmpty(tenQuanNguc)) tenQuanNguc = "";
+
+            //List<QuanNguc> listQuanNguc = db.QuanNguc
+            //   .Where(q => (q.TenQuanNguc.Contains(tenQuanNguc) || tenQuanNguc == null) && (q.KhuID == _khuid))
+            //   .ToList(); 
+            var quanngucList = from q in db.QuanNguc
+                               join k in db.Khu
+                                    on q.KhuID equals k.ID
+                               where q.TenQuanNguc.Contains(tenQuanNguc) && q.KhuID == _khuid
+                               select new QuanNgucsParam
+                               {
+                                   ID = q.ID,
+                                   TenQuanNguc = q.TenQuanNguc,
+                                   NgaySinh = q.NgaySinh,
+                                   QueQuan = q.QueQuan,
+                                   GioiTinh = q.GioiTinh,
+                                   KhuID = k.TenKhu,
+                                   NamCongTac = q.NamCongTac,
+                                   ThoiHanCongTac = q.ThoiHanCongTac,
+                                   CMND = q.CMND,
+                                   ChucVu = q.ChucVu,
+                                   QuanHam = q.QuanHam,
+                                   AnhNhanDien = q.AnhNhanDien
+
+                               };
+            int pageSize = 5;
+            int pageNumber = (i ?? 1);
+            return View(quanngucList.OrderBy(q => q.TenQuanNguc).ToPagedList(pageNumber, pageSize));
         }
 
         public ActionResult ViewDetails(Guid id)
@@ -46,19 +78,19 @@ namespace Project4.Controllers
             return PartialView("_QuanNgucsDataTable", listQuanNguc);
         }
         // GET: QuanNgucs/Details/5
-        //public ActionResult Details(Guid? id)
-        //{
-        //    if (id == null)
-        //    {
-        //        return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-        //    }
-        //    QuanNguc quanNguc = db.QuanNguc.Find(id);
-        //    if (quanNguc == null)
-        //    {
-        //        return HttpNotFound();
-        //    }
-        //    return View(quanNguc);
-        //}
+        public ActionResult Details(Guid? id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            QuanNguc quanNguc = db.QuanNguc.Find(id);
+            if (quanNguc == null)
+            {
+                return HttpNotFound();
+            }
+            return View(quanNguc);
+        }
 
         // GET: QuanNgucs/Create
         public ActionResult Create()

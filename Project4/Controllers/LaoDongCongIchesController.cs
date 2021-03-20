@@ -6,6 +6,7 @@ using System.Linq;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
+using PagedList;
 using Project4.Models;
 
 namespace Project4.Controllers
@@ -14,14 +15,36 @@ namespace Project4.Controllers
     {
         private ApplicationDbContext db = new ApplicationDbContext();
 
-        // GET: LaoDongCongIches
-        public ActionResult Index()
+        // GET: LaoDongCongIches 
+        public ActionResult Index(string tenPhamNhan, int? i)
         {
+<<<<<<< HEAD
             if (User.Identity.GetQuanNgucId() == "")
             {
                 return RedirectToAction("DangNhap", "TaiKhoan");
             }
             return View(db.LaoDongCongIch.ToList());
+=======
+            if (string.IsNullOrEmpty(tenPhamNhan)) tenPhamNhan = "";
+            var laodongCaitaoList = from l in db.LaoDongCongIch
+                                    join p in db.PhamNhan
+                                           on l.PhamNhanID equals p.ID
+                                    join q in db.QuanNguc
+                                           on l.QuanNgucID equals q.ID
+                                    where p.TenPhamNhan.Contains(tenPhamNhan)
+                                    select new LaoDongCongIchesParam
+                                    {
+                                        ID = l.ID,
+                                        PhamNhanID = p.TenPhamNhan,
+                                        QuanNgucID = q.TenQuanNguc,
+                                        KhuVucLamViec = l.KhuVucLamViec,
+                                        BieuHien = l.BieuHien
+                                    };
+            int pageSize = 5;  
+            int pageNumber = (i ?? 1); 
+            return View(laodongCaitaoList.OrderBy(l => l.PhamNhanID)
+                        .ToPagedList(pageNumber, pageSize));
+>>>>>>> 1439f1cc4c1ae0c0eac42faa59d45066190de158
         }
 
         // GET: LaoDongCongIches/Details/5

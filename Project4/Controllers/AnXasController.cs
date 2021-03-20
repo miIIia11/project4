@@ -6,17 +6,19 @@ using System.Linq;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
+using PagedList;
 using Project4.Models;
 
-namespace Project4.Controllers 
+namespace Project4.Controllers
 {
     public class AnXasController : Controller
     {
         private ApplicationDbContext db = new ApplicationDbContext();
 
-        // GET: AnXas  
-        public ActionResult Index()
+        // GET: AnXas   hihi4444 
+        public ActionResult Index(string tenPhamNhan, int? i)
         {
+<<<<<<< HEAD
             if (User.Identity.GetQuanNgucId() == "")
             {
                 return RedirectToAction("DangNhap", "TaiKhoan");
@@ -25,7 +27,25 @@ namespace Project4.Controllers
 
             ViewBag.Phong = db.PhongGiam.ToList();
             return View(db.AnXa.ToList());
+=======
+            if (string.IsNullOrEmpty(tenPhamNhan)) tenPhamNhan = "";
+            var anxaList = from a in db.AnXa
+                           join p in db.PhamNhan
+                                   on a.PhamNhanID equals p.ID
+                           where p.TenPhamNhan.Contains(tenPhamNhan)
+                           select new AnXaParam
+                           {
+                               ID = a.ID,
+                               PhamNhanID = p.TenPhamNhan,
+                               MucDoAnXa = a.MucDoAnXa,
+                               MucDoCaiTao = a.MucDoCaiTao
+                           };
+            int pageSize = 5;
+            int pageNumber = (i ?? 1);
+            return View(anxaList.OrderBy(t => t.PhamNhanID).ToPagedList(pageNumber, pageSize));
+>>>>>>> 1439f1cc4c1ae0c0eac42faa59d45066190de158
         }
+
         [HttpGet]
         public JsonResult getAllAnXa(string txtSearch, int? page)
         {
@@ -166,7 +186,7 @@ namespace Project4.Controllers
         // GET: AnXas/Delete/5
         public ActionResult Delete(int? id)
         {
-            if (id == null) 
+            if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }

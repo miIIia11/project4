@@ -6,6 +6,7 @@ using System.Linq;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
+using PagedList;
 using Project4.Models;
 
 namespace Project4.Controllers
@@ -15,8 +16,9 @@ namespace Project4.Controllers
         private ApplicationDbContext db = new ApplicationDbContext();
 
         // GET: ThamGuis
-        public ActionResult Index()
+        public ActionResult Index(string tenPhamNhan, int? i)
         {
+<<<<<<< HEAD
             if (User.Identity.GetQuanNgucId() == "")
             {
                 return RedirectToAction("DangNhap", "TaiKhoan");
@@ -25,6 +27,30 @@ namespace Project4.Controllers
 
             ViewBag.Phong = db.PhongGiam.ToList();
             return View(db.ThamGui.ToList());
+=======
+            if (string.IsNullOrEmpty(tenPhamNhan)) tenPhamNhan = ""; 
+            var thamguiList = from t in db.ThamGui
+                              join p in db.PhamNhan
+                                     on t.PhamNhanID equals p.ID
+                              join q in db.QuanNguc
+                                     on t.QuanNgucID equals q.ID
+                              where p.TenPhamNhan.Contains(tenPhamNhan)
+                              select new ThamGuiParam
+                              {
+                                  ID = t.ID,
+                                  PhamNhanID = p.TenPhamNhan,
+                                  QuanNgucID = q.TenQuanNguc,
+                                  KeHoachThamGui = t.KeHoachThamGui,
+                                  NgayThamGui = t.NgayThamGui,
+                                  ThongTinNguoiThamHoi = t.ThongTinNguoiThamHoi,
+                                  SoLanThamHoi = t.SoLanThamHoi
+                              }; 
+             
+            int pageSize = 5; 
+            int pageNumber = (i ?? 1); 
+            return View(thamguiList.OrderBy(t => t.PhamNhanID)
+                .ToPagedList(pageNumber, pageSize));
+>>>>>>> 1439f1cc4c1ae0c0eac42faa59d45066190de158
         }
 
         public ActionResult ThanhTimKiem(string khuID)

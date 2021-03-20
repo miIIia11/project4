@@ -7,6 +7,7 @@ using System.Linq;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
+using PagedList;
 using Project4.Models;
 
 namespace Project4.Controllers
@@ -16,7 +17,7 @@ namespace Project4.Controllers
         private ApplicationDbContext db = new ApplicationDbContext();
 
         // GET: PhamNhans oh yes
-        public ActionResult Index()
+        public ActionResult Index(string txtTenHoacMa, string khuID, string phongID, int? i)
         {
             if (User.Identity.GetQuanNgucId() == "")
             {
@@ -25,22 +26,70 @@ namespace Project4.Controllers
             var khu = db.Khu.ToList();
             if (khu != null)
             {
+                //view bag 2 dropdown
                 ViewBag.Khu = khu;
-
-                var khu1 = khu.Select(s => s.ID).FirstOrDefault();
-
-                ViewBag.Phong = db.PhongGiam.Where(w => w.KhuID == khu1).ToList();
+                ViewBag.SelectedKhu = khuID;
+                int idKhu = 1;
+                if (string.IsNullOrEmpty(khuID))
+                {
+                }
+                else
+                {
+                    idKhu = int.Parse(khuID);
+                }
+                ViewBag.Phong = db.PhongGiam.Where(w => w.KhuID == idKhu).ToList();
             }
             else
             {
-
             }
+            //search  
+            int khuid = 0, phongid = 0;
+            if (string.IsNullOrEmpty(khuID)) khuid = 1;
+            else khuid = Convert.ToInt32(khuID);
+
+            if (string.IsNullOrEmpty(phongID)) phongid = 1;
+            else phongid = Convert.ToInt32(phongID);
+
+            if (string.IsNullOrEmpty(txtTenHoacMa)) txtTenHoacMa = "";
+
+            //List<PhamNhan> listPhamNhan = db.PhamNhan
+            //    .Where(w => (w.TenPhamNhan.Contains(txtTenHoacMa) || txtTenHoacMa == null)
+            //     && (w.IDKhu == khuid)
+            //     && (w.PhongGiamID == phongid))
+            //    .ToList();  
+            var listPhamNhan = from p in db.PhamNhan
+                               join k in db.Khu
+                                    on p.IDKhu equals k.ID
+                               join ph in db.PhongGiam
+                                    on p.PhongGiamID equals ph.ID
+                               where p.TenPhamNhan.Contains(txtTenHoacMa)
+                                   && p.IDKhu == khuid && p.PhongGiamID == phongid
+                               select new PhamNhanParams
+                               {
+                                   ID = p.ID,
+                                   TenPhamNhan = p.TenPhamNhan,
+                                   BiDanh = p.BiDanh,
+                                   AnhNhanDien = p.AnhNhanDien,
+                                   QueQuan = p.QueQuan,
+                                   NgaySinh = p.NgaySinh,
+                                   GioiTinh = p.GioiTinh,
+                                   IDKhu = k.TenKhu,
+                                   ToiDanh = p.ToiDanh,
+                                   MucDoNguyHiem = p.MucDoNguyHiem,
+                                   SoNgayGiamGiu = p.SoNgayGiamGiu,
+                                   CMND = p.CMND,
+                                   QuaTrinhGayAn = p.QuaTrinhGayAn,
+                                   DiaDiemGayAn = p.DiaDiemGayAn,
+                                   PhongGiamID = ph.TenPhong,
+                               };
+            int pageSize = 5; 
+            int pageNumber = (i ?? 1);
 
             ViewBag.ToiDanh = Common.CommonConstant.toiDanh;
             ViewBag.MucDoNguyHiem = Common.CommonConstant.mucDoNguyHiem;
-
-            return View(db.PhamNhan.ToList());
+            return View(listPhamNhan.OrderBy(p => p.TenPhamNhan).ToPagedList(pageNumber, pageSize));
         }
+
 
         public ActionResult ThanhTimKiem(string khuID)
         {
@@ -52,26 +101,35 @@ namespace Project4.Controllers
             return PartialView("_PhamNhansSearchBar");
         }
 
-        public ActionResult TimKiem(string txtTenHoacMa, string khuID, string phongID)
-        {
-            IQueryable<PhamNhan> listPhamNhan = db.PhamNhan;
-            if (txtTenHoacMa.Length == 5)
-            {
-                //listPhamNhan = db.PhamNhan.Where(w => w. == txtTenOrMa);
-            }
-            else
-            {
-                listPhamNhan = listPhamNhan.Where(w => w.TenPhamNhan.Contains(txtTenHoacMa));
-            }
-            var IDkhu = int.Parse(khuID);
-            listPhamNhan = listPhamNhan.Where(w => w.IDKhu == IDkhu);
-            if (phongID != string.Empty || phongID != "null")
-            {
-                var IDphong = int.Parse(phongID);
-                listPhamNhan = listPhamNhan.Where(w => w.PhongGiamID == IDphong);
-            }
-            return PartialView("_PhamNhansDataTable", listPhamNhan);
-        }
+        //public ActionResult TimKiem(string txtTenHoacMa, string khuID, string phongID, int? i)
+        //{
+        //    IQueryable<PhamNhan> listPhamNhan = db.PhamNhan;
+        //    if (txtTenHoacMa.Length == 5)
+        //    {
+        //        //listPhamNhan = db.PhamNhan.Where(w => w. == txtTenOrMa);
+        //    }
+        //    else
+        //    {
+        //    }
+
+
+        //    var listPhamNhan = db.PhamNhan.Where(w => w.TenPhamNhan.Contains(txtTenHoacMa));
+        //    if (string.IsNullOrEmpty(khuID))
+        //    {
+        //        khuID = "1";
+        //    }
+        //    var IDkhu = int.Parse(khuID);
+        //    listPhamNhan = listPhamNhan.Where(w => w.IDKhu == IDkhu);
+        //    if (phongID != string.Empty || phongID != "null")
+        //    {
+        //        var IDphong = int.Parse(phongID);
+        //        listPhamNhan = listPhamNhan.Where(w => w.PhongGiamID == IDphong);
+        //    }
+        //    return View("", listPhamNhan.OrderBy(o => o.TenPhamNhan).ToPagedList(i ?? 1, 7));
+        //    return PartialView("_PhamNhansDataTable", listPhamNhan.OrderBy(p => p.TenPhamNhan).ToPagedList(i ?? 1, 7));
+        //}
+
+
         // GET: PhamNhans/Details/5
         public ActionResult Details(Guid? id)
         {
@@ -87,8 +145,8 @@ namespace Project4.Controllers
             return View(phamNhan);
         }
 
-        // GET: PhamNhans/Create
-        public ActionResult Create()
+        // GET: PhamNhans/Create 2222D
+        public ActionResult Create() 
         {
             ViewBag.GioiTinh = new SelectList(Common.CommonConstant.gioiTinh, "Key", "Value", null);
             ViewBag.ToiDanh = new SelectList(Common.CommonConstant.toiDanh, "Key", "Value", null);
@@ -105,7 +163,7 @@ namespace Project4.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "ID,TenPhamNhan,BiDanh,AnhNhanDien,QueQuan,NgaySinh,GioiTinh,IDKhu,ToiDanh,MucDoNguyHiem,SoNgayGiamGiu,CMND,QuaTrinhGayAn,DiaDiemGayAn,PhongGiamID")] PhamNhan phamNhan, HttpPostedFileBase file)
         {
-            if (!ModelState.IsValid)
+            if (ModelState.IsValid) 
             {
                 string url = string.Empty;
                 phamNhan.ID = Guid.NewGuid();
