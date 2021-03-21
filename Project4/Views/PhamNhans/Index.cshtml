@@ -107,8 +107,8 @@
                         <td>
                             @if (item.ToiDanh > 0)
                             {
-                                @Enum.GetName(typeof(Project4.Common.CommonConstant.ToiDanh), item.ToiDanh)
-                                @*@(((Dictionary<int, string>)ViewBag.ToiDanh)[item.ToiDanh]);*@
+                                @*@Enum.GetName(typeof(Project4.Common.CommonConstant.ToiDanh), item.ToiDanh)*@
+                                @(((Dictionary<int, string>)ViewBag.ToiDanh)[item.ToiDanh]);
                             }
                             else
                             {
@@ -118,8 +118,8 @@
                         <td>
                             @if (item.MucDoNguyHiem > 0)
                             {
-                                @Enum.GetName(typeof(Project4.Common.CommonConstant.MucDoNguyHiem), item.MucDoNguyHiem)
-                                @*@(((Dictionary<int, string>)ViewBag.MucDoNguyHiem)[item.MucDoNguyHiem]);*@
+                                @*@Enum.GetName(typeof(Project4.Common.CommonConstant.MucDoNguyHiem), item.MucDoNguyHiem)*@
+                                @(((Dictionary<int, string>)ViewBag.MucDoNguyHiem)[item.MucDoNguyHiem]);
                             }
 
                         </td>

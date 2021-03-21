@@ -42,6 +42,44 @@ namespace Project4.Controllers
         // GET: Benhs/Create
         public ActionResult Create()
         {
+            if (User.IsInRole("QuanNgucTruong"))
+            {
+                var allPhamNhan = db.PhamNhan;
+                var allBenh = db.Benh;
+                foreach (var item in allPhamNhan)
+                {
+                    var biBenh = db.Benh.Where(w => w.PhamNhanID == item.ID);
+                    if (biBenh != null && biBenh.Where(w => DbFunctions.DiffDays(DateTime.Now, w.NgayBatDauChuaTri) <= w.NgayChuaTri).Any())
+                    {
+                        allPhamNhan.Remove(item);
+                    }
+                }
+                ViewBag.PhamNhanID = new SelectList(allPhamNhan, "ID", "TenPhamNhan", null);
+            }
+            else
+            {
+                var quanNgucHienTai = db.QuanNguc.Find(Guid.Parse(User.Identity.GetQuanNgucId()));
+                var phongPhamNhan = db.PhongGiam.Where(w => w.KhuID == quanNgucHienTai.KhuID).Select(s => s.ID);
+                var phamNhan = db.PhamNhan.Where(w => phongPhamNhan.Contains(w.PhongGiamID)).ToList();
+                List<PhamNhan> phamNhanRemove = new List<PhamNhan>();
+                foreach (var item in phamNhan)
+                {
+                    var biBenh = db.Benh.Where(w => w.PhamNhanID == item.ID);
+                    if (biBenh != null && biBenh.Where(w => DbFunctions.DiffDays(DateTime.Now, w.NgayBatDauChuaTri) <= w.NgayChuaTri).Any())
+                    {
+                        phamNhanRemove.Add(item);
+                    }
+                }
+                foreach (var item in phamNhanRemove)
+                {
+                    phamNhan.Remove(item);
+                }
+                ViewBag.PhamNhanID = new SelectList(phamNhan, "ID", "TenPhamNhan", null);
+            }
+            if (ViewBag.PhamNhanID == null)
+            {
+                return RedirectToAction("Index");
+            }
             return View();
         }
 
@@ -50,10 +88,11 @@ namespace Project4.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "ID,TenBenh")] Benh benh)
+        public ActionResult Create([Bind(Include = "ID,PhamNhanID,NgayChuaTri")] Benh benh)
         {
             if (ModelState.IsValid)
             {
+                benh.NgayBatDauChuaTri = DateTime.Now.AddDays(1);
                 db.Benh.Add(benh);
                 db.SaveChanges();
                 return RedirectToAction("Index");
@@ -74,6 +113,7 @@ namespace Project4.Controllers
             {
                 return HttpNotFound();
             }
+            ViewBag.PhamNhanID = new SelectList(db.PhamNhan, "ID", "TenPhamNhan", benh.PhamNhanID);
             return View(benh);
         }
 
@@ -82,7 +122,7 @@ namespace Project4.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "ID,TenBenh")] Benh benh)
+        public ActionResult Edit([Bind(Include = "ID,PhamNhanID,NgayChuaTri")] Benh benh)
         {
             if (ModelState.IsValid)
             {

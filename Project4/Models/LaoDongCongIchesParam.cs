@@ -10,8 +10,10 @@ namespace Project4.Models
     { 
         public int ID { get; set; }
 
+        public Guid PhamNhanID { get; set; }
+
         [DisplayName("Phạm nhân")] 
-        public string PhamNhanID { get; set; } 
+        public string TenPhamNhan { get; set; }
 
         [DisplayName("Quản Ngục")] 
         public string QuanNgucID { get; set; }
@@ -21,5 +23,7 @@ namespace Project4.Models
 
         [DisplayName("Biểu hiện")]
         public int BieuHien { get; set; } //enum 
+
+        public bool DangBiBenh { get; set; }
     }
 }

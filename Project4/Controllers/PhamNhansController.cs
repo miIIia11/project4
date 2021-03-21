@@ -23,24 +23,44 @@ namespace Project4.Controllers
             {
                 return RedirectToAction("DangNhap", "TaiKhoan");
             }
-            var khu = db.Khu.ToList();
-            if (khu != null)
+            if (User.IsInRole("QuanNgucTruong"))
             {
-                //view bag 2 dropdown
-                ViewBag.Khu = khu;
-                ViewBag.SelectedKhu = khuID;
-                int idKhu = 1;
-                if (string.IsNullOrEmpty(khuID))
+                var khu = db.Khu.ToList();
+                if (khu != null)
                 {
+                    //view bag 2 dropdown
+                    ViewBag.Khu = khu;
+                    ViewBag.SelectedKhu = khuID;
+                    int idKhu = 1;
+                    if (string.IsNullOrEmpty(khuID))
+                    {
+                    }
+                    else
+                    {
+                        idKhu = int.Parse(khuID);
+                    }
+                    ViewBag.Phong = db.PhongGiam.Where(w => w.KhuID == idKhu).ToList();
                 }
                 else
                 {
-                    idKhu = int.Parse(khuID);
                 }
-                ViewBag.Phong = db.PhongGiam.Where(w => w.KhuID == idKhu).ToList();
             }
             else
             {
+                var quanNgucViaUser = User.Identity.GetQuanNgucId();
+                var khuquannguc = db.QuanNguc.Find(Guid.Parse(quanNgucViaUser));
+                if (khuquannguc == null)
+                {
+                    return RedirectToAction("Index", "TrangChu");
+                }
+                else
+                {
+                    ViewBag.Khu = db.Khu.Find(khuquannguc.KhuID);
+                    ViewBag.SelectedKhu = khuquannguc.KhuID;
+                    ViewBag.Phong = db.PhongGiam.Where(w => w.KhuID == khuquannguc.KhuID).ToList();
+                }
+
+
             }
             //search  
             int khuid = 0, phongid = 0;
@@ -82,7 +102,7 @@ namespace Project4.Controllers
                                    DiaDiemGayAn = p.DiaDiemGayAn,
                                    PhongGiamID = ph.TenPhong,
                                };
-            int pageSize = 5; 
+            int pageSize = 5;
             int pageNumber = (i ?? 1);
 
             ViewBag.ToiDanh = Common.CommonConstant.toiDanh;
@@ -146,14 +166,105 @@ namespace Project4.Controllers
         }
 
         // GET: PhamNhans/Create 2222D
-        public ActionResult Create() 
+        public ActionResult Create()
         {
             ViewBag.GioiTinh = new SelectList(Common.CommonConstant.gioiTinh, "Key", "Value", null);
             ViewBag.ToiDanh = new SelectList(Common.CommonConstant.toiDanh, "Key", "Value", null);
             ViewBag.MucDoNguyHiem = new SelectList(Common.CommonConstant.mucDoNguyHiem, "Key", "Value", null);
             ViewBag.IDKhu = new SelectList(db.Khu, "ID", "TenKhu", null);
             ViewBag.PhongGiamID = new SelectList(db.PhongGiam, "ID", "TenPhong", null);
+            if (!User.IsInRole("QuanNgucTruong"))
+            {
+                var quanNgucHienTai = db.QuanNguc.Find(Guid.Parse(User.Identity.GetQuanNgucId()));
+                ViewBag.IDKhu = new SelectList(db.Khu, "ID", "TenKhu", quanNgucHienTai.KhuID);
+                var phongGiamConCho = db.PhongGiam.Where(w => w.KhuID == quanNgucHienTai.KhuID).ToList();
+                List<PhongGiam> phongGiamRemove = new List<PhongGiam>();
+                foreach (var item in phongGiamConCho)
+                {
+                    if (db.PhamNhan.Where(w => w.PhongGiamID == item.ID).Count() == item.SoLuongPhamNhanMax)
+                    {
+                        phongGiamRemove.Add(item);
+                    }
+                }
+                foreach (var item in phongGiamRemove)
+                {
+                    phongGiamConCho.Remove(item);
+                }
+                ViewBag.PhongGiamID = new SelectList(phongGiamConCho, "ID", "TenPhong", null);
+            }
+            else
+            {
+                var khuAid = db.Khu.FirstOrDefault(f => f.TenKhu == "A");
+                var phongGiamConCho = db.PhongGiam.Where(w => w.KhuID == khuAid.ID).ToList();
+                List<PhongGiam> phongGiamRemove = new List<PhongGiam>();
+                foreach (var item in phongGiamConCho)
+                {
+                    if (db.PhamNhan.Where(w => w.PhongGiamID == item.ID).Count() == item.SoLuongPhamNhanMax)
+                    {
+                        phongGiamRemove.Add(item);
+                    }
+                }
+                foreach (var item in phongGiamRemove)
+                {
+                    phongGiamConCho.Remove(item);
+                }
+                ViewBag.PhongGiamID = new SelectList(phongGiamConCho, "ID", "TenPhong", null);
+            }
             return View();
+        }
+
+        public ActionResult LoadPhong(string khuID, string phongDangChuaPhamNhanID)
+        {
+            ViewBag.IDKhu = db.Khu.ToList();
+            ViewBag.SelectedKhu = khuID;
+            int idKhu = int.Parse(khuID);
+            ViewBag.PhongGiamID = new SelectList(db.PhongGiam.Where(w => w.KhuID == idKhu), "ID", "TenPhong", null);
+
+            if (!User.IsInRole("QuanNgucTruong"))
+            {
+                var quanNgucHienTai = db.QuanNguc.Find(Guid.Parse(User.Identity.GetQuanNgucId()));
+                ViewBag.IDKhu = new SelectList(db.Khu, "ID", "TenKhu", quanNgucHienTai.KhuID);
+                var phongGiamConCho = db.PhongGiam.Where(w => w.KhuID == quanNgucHienTai.KhuID).ToList();
+                List<PhongGiam> phongGiamRemove = new List<PhongGiam>();
+                foreach (var item in phongGiamConCho)
+                {
+                    if (db.PhamNhan.Where(w => w.PhongGiamID == item.ID).Count() == item.SoLuongPhamNhanMax)
+                    {
+                        phongGiamRemove.Add(item);
+                    }
+                }
+                foreach (var item in phongGiamRemove)
+                {
+                    int i = 0;
+                    if (!int.TryParse(phongDangChuaPhamNhanID, out i) && item.ID != int.Parse(phongDangChuaPhamNhanID))
+                    {
+                        phongGiamConCho.Remove(item);
+                    }
+                }
+                ViewBag.PhongGiamID = new SelectList(phongGiamConCho, "ID", "TenPhong");
+            }
+            else
+            {
+                var phongGiamConCho = db.PhongGiam.Where(w => w.KhuID == idKhu).ToList();
+                List<PhongGiam> phongGiamRemove = new List<PhongGiam>();
+                foreach (var item in phongGiamConCho)
+                {
+                    if (db.PhamNhan.Where(w => w.PhongGiamID == item.ID).Count() == item.SoLuongPhamNhanMax)
+                    {
+                        phongGiamRemove.Add(item);
+                    }
+                }
+                foreach (var item in phongGiamRemove)
+                {
+                    int i = 0;
+                    if (!int.TryParse(phongDangChuaPhamNhanID, out i) && item.ID != int.Parse(phongDangChuaPhamNhanID))
+                    {
+                        phongGiamConCho.Remove(item);
+                    }
+                }
+                ViewBag.PhongGiamID = new SelectList(phongGiamConCho, "ID", "TenPhong");
+            }
+            return PartialView("_PhongPartial");
         }
 
         // POST: PhamNhans/Create
@@ -163,7 +274,7 @@ namespace Project4.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "ID,TenPhamNhan,BiDanh,AnhNhanDien,QueQuan,NgaySinh,GioiTinh,IDKhu,ToiDanh,MucDoNguyHiem,SoNgayGiamGiu,CMND,QuaTrinhGayAn,DiaDiemGayAn,PhongGiamID")] PhamNhan phamNhan, HttpPostedFileBase file)
         {
-            if (ModelState.IsValid) 
+            if (ModelState.IsValid)
             {
                 string url = string.Empty;
                 phamNhan.ID = Guid.NewGuid();
@@ -173,16 +284,101 @@ namespace Project4.Controllers
                 {
                     //error = "You must include a Featured Image for event.";
                     //ViewBag.Error = error;
-                    ViewBag.NgaySinh = phamNhan.NgaySinh.HasValue ? phamNhan.NgaySinh.Value.ToString("MM/dd/yyyy") : null;
+                    ViewBag.GioiTinh = new SelectList(Common.CommonConstant.gioiTinh, "Key", "Value", null);
+                    ViewBag.ToiDanh = new SelectList(Common.CommonConstant.toiDanh, "Key", "Value", null);
+                    ViewBag.MucDoNguyHiem = new SelectList(Common.CommonConstant.mucDoNguyHiem, "Key", "Value", null);
+                    ViewBag.IDKhu = new SelectList(db.Khu, "ID", "TenKhu", null);
+                    ViewBag.PhongGiamID = new SelectList(db.PhongGiam, "ID", "TenPhong", null);
+                    if (!User.IsInRole("QuanNgucTruong"))
+                    {
+                        var quanNgucHienTai = db.QuanNguc.Find(Guid.Parse(User.Identity.GetQuanNgucId()));
+                        ViewBag.IDKhu = new SelectList(db.Khu, "ID", "TenKhu", quanNgucHienTai.KhuID);
+                        var phongGiamConCho = db.PhongGiam.Where(w => w.KhuID == quanNgucHienTai.KhuID).ToList();
+                        List<PhongGiam> phongGiamRemove = new List<PhongGiam>();
+                        foreach (var item in phongGiamConCho)
+                        {
+                            if (db.PhamNhan.Where(w => w.PhongGiamID == item.ID).Count() == item.SoLuongPhamNhanMax)
+                            {
+                                phongGiamRemove.Add(item);
+                            }
+                        }
+                        foreach (var item in phongGiamRemove)
+                        {
+                            phongGiamConCho.Remove(item);
+                        }
+                        ViewBag.PhongGiamID = new SelectList(phongGiamConCho, "ID", "TenPhong", null);
+                    }
+                    else
+                    {
+                        var phongGiamConCho = db.PhongGiam.ToList();
+                        List<PhongGiam> phongGiamRemove = new List<PhongGiam>();
+                        foreach (var item in phongGiamConCho)
+                        {
+                            if (db.PhamNhan.Where(w => w.PhongGiamID == item.ID).Count() == item.SoLuongPhamNhanMax)
+                            {
+                                phongGiamRemove.Add(item);
+                            }
+                        }
+                        foreach (var item in phongGiamRemove)
+                        {
+                            phongGiamConCho.Remove(item);
+                        }
+                        ViewBag.PhongGiamID = new SelectList(phongGiamConCho, "ID", "TenPhong", null);
+                    }
                     return View(phamNhan);
                 }
                 phamNhan.AnhNhanDien = url;
-
+                if (!User.IsInRole("QuanNgucTruong"))
+                {
+                    var quanNgucHienTai = db.QuanNguc.Find(Guid.Parse(User.Identity.GetQuanNgucId()));
+                    phamNhan.IDKhu = quanNgucHienTai.KhuID;
+                }
                 db.PhamNhan.Add(phamNhan);
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
             ViewBag.NgaySinh = phamNhan.NgaySinh.HasValue ? phamNhan.NgaySinh.Value.ToString("MM/dd/yyyy") : null;
+            ViewBag.GioiTinh = new SelectList(Common.CommonConstant.gioiTinh, "Key", "Value", null);
+            ViewBag.ToiDanh = new SelectList(Common.CommonConstant.toiDanh, "Key", "Value", null);
+            ViewBag.MucDoNguyHiem = new SelectList(Common.CommonConstant.mucDoNguyHiem, "Key", "Value", null);
+            ViewBag.IDKhu = new SelectList(db.Khu, "ID", "TenKhu", null);
+            ViewBag.PhongGiamID = new SelectList(db.PhongGiam, "ID", "TenPhong", null);
+            if (!User.IsInRole("QuanNgucTruong"))
+            {
+                var quanNgucHienTai = db.QuanNguc.Find(Guid.Parse(User.Identity.GetQuanNgucId()));
+                ViewBag.IDKhu = new SelectList(db.Khu, "ID", "TenKhu", quanNgucHienTai.KhuID);
+                var phongGiamConCho = db.PhongGiam.Where(w => w.KhuID == quanNgucHienTai.KhuID).ToList();
+                List<PhongGiam> phongGiamRemove = new List<PhongGiam>();
+                foreach (var item in phongGiamConCho)
+                {
+                    if (db.PhamNhan.Where(w => w.PhongGiamID == item.ID).Count() == item.SoLuongPhamNhanMax)
+                    {
+                        phongGiamRemove.Add(item);
+                    }
+                }
+                foreach (var item in phongGiamRemove)
+                {
+                    phongGiamConCho.Remove(item);
+                }
+                ViewBag.PhongGiamID = new SelectList(phongGiamConCho, "ID", "TenPhong", null);
+            }
+            else
+            {
+                var phongGiamConCho = db.PhongGiam.ToList();
+                List<PhongGiam> phongGiamRemove = new List<PhongGiam>();
+                foreach (var item in phongGiamConCho)
+                {
+                    if (db.PhamNhan.Where(w => w.PhongGiamID == item.ID).Count() == item.SoLuongPhamNhanMax)
+                    {
+                        phongGiamRemove.Add(item);
+                    }
+                }
+                foreach (var item in phongGiamRemove)
+                {
+                    phongGiamConCho.Remove(item);
+                }
+                ViewBag.PhongGiamID = new SelectList(phongGiamConCho, "ID", "TenPhong", null);
+            }
             return View(phamNhan);
         }
 
@@ -204,6 +400,49 @@ namespace Project4.Controllers
             ViewBag.MucDoNguyHiem = new SelectList(Common.CommonConstant.mucDoNguyHiem, "Key", "Value", phamNhan.MucDoNguyHiem);
             ViewBag.IDKhu = new SelectList(db.Khu, "ID", "TenKhu", phamNhan.IDKhu);
             ViewBag.PhongGiamID = new SelectList(db.PhongGiam, "ID", "TenPhong", phamNhan.PhongGiamID);
+            ViewBag.PhongDangChuaPhamNhan = phamNhan.PhongGiamID;
+            if (!User.IsInRole("QuanNgucTruong"))
+            {
+                var quanNgucHienTai = db.QuanNguc.Find(Guid.Parse(User.Identity.GetQuanNgucId()));
+                ViewBag.IDKhu = new SelectList(db.Khu, "ID", "TenKhu", quanNgucHienTai.KhuID);
+                var phongGiamConCho = db.PhongGiam.Where(w => w.KhuID == quanNgucHienTai.KhuID).ToList();
+                List<PhongGiam> phongGiamRemove = new List<PhongGiam>();
+                foreach (var item in phongGiamConCho)
+                {
+                    if (db.PhamNhan.Where(w => w.PhongGiamID == item.ID).Count() == item.SoLuongPhamNhanMax)
+                    {
+                        phongGiamRemove.Add(item);
+                    }
+                }
+                foreach (var item in phongGiamRemove)
+                {
+                    if (item.ID != phamNhan.PhongGiamID)
+                    {
+                        phongGiamConCho.Remove(item);
+                    }
+                }
+                ViewBag.PhongGiamID = new SelectList(phongGiamConCho, "ID", "TenPhong", phamNhan.PhongGiamID);
+            }
+            else
+            {
+                var phongGiamConCho = db.PhongGiam.Where(w => w.KhuID == phamNhan.IDKhu).ToList();
+                List<PhongGiam> phongGiamRemove = new List<PhongGiam>();
+                foreach (var item in phongGiamConCho)
+                {
+                    if (db.PhamNhan.Where(w => w.PhongGiamID == item.ID).Count() == item.SoLuongPhamNhanMax)
+                    {
+                        phongGiamRemove.Add(item);
+                    }
+                }
+                foreach (var item in phongGiamRemove)
+                {
+                    if (item.ID != phamNhan.PhongGiamID)
+                    {
+                        phongGiamConCho.Remove(item);
+                    }
+                }
+                ViewBag.PhongGiamID = new SelectList(phongGiamConCho, "ID", "TenPhong", phamNhan.PhongGiamID);
+            }
             return View(phamNhan);
         }
 
@@ -222,11 +461,64 @@ namespace Project4.Controllers
                 {
                     phamNhan.AnhNhanDien = url;
                 }
+                if (!User.IsInRole("QuanNgucTruong"))
+                {
+                    var quanNgucHienTai = db.QuanNguc.Find(Guid.Parse(User.Identity.GetQuanNgucId()));
+                    phamNhan.IDKhu = quanNgucHienTai.KhuID;
+                }
                 db.Entry(phamNhan).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
             ViewBag.NgaySinh = phamNhan.NgaySinh.HasValue ? phamNhan.NgaySinh.Value.ToString("MM/dd/yyyy") : null;
+            ViewBag.GioiTinh = new SelectList(Common.CommonConstant.gioiTinh, "Key", "Value", phamNhan.GioiTinh);
+            ViewBag.ToiDanh = new SelectList(Common.CommonConstant.toiDanh, "Key", "Value", phamNhan.ToiDanh);
+            ViewBag.MucDoNguyHiem = new SelectList(Common.CommonConstant.mucDoNguyHiem, "Key", "Value", phamNhan.MucDoNguyHiem);
+            ViewBag.IDKhu = new SelectList(db.Khu, "ID", "TenKhu", phamNhan.IDKhu);
+            ViewBag.PhongGiamID = new SelectList(db.PhongGiam, "ID", "TenPhong", phamNhan.PhongGiamID);
+            ViewBag.PhongDangChuaPhamNhan = phamNhan.PhongGiamID;
+            if (!User.IsInRole("QuanNgucTruong"))
+            {
+                var quanNgucHienTai = db.QuanNguc.Find(Guid.Parse(User.Identity.GetQuanNgucId()));
+                ViewBag.IDKhu = new SelectList(db.Khu, "ID", "TenKhu", quanNgucHienTai.KhuID);
+                var phongGiamConCho = db.PhongGiam.Where(w => w.KhuID == quanNgucHienTai.KhuID).ToList();
+                List<PhongGiam> phongGiamRemove = new List<PhongGiam>();
+                foreach (var item in phongGiamConCho)
+                {
+                    if (db.PhamNhan.Where(w => w.PhongGiamID == item.ID).Count() == item.SoLuongPhamNhanMax)
+                    {
+                        phongGiamRemove.Add(item);
+                    }
+                }
+                foreach (var item in phongGiamRemove)
+                {
+                    if (item.ID != phamNhan.PhongGiamID)
+                    {
+                        phongGiamConCho.Remove(item);
+                    }
+                }
+                ViewBag.PhongGiamID = new SelectList(phongGiamConCho, "ID", "TenPhong", phamNhan.PhongGiamID);
+            }
+            else
+            {
+                var phongGiamConCho = db.PhongGiam.ToList();
+                List<PhongGiam> phongGiamRemove = new List<PhongGiam>();
+                foreach (var item in phongGiamConCho)
+                {
+                    if (db.PhamNhan.Where(w => w.PhongGiamID == item.ID).Count() == item.SoLuongPhamNhanMax)
+                    {
+                        phongGiamRemove.Add(item);
+                    }
+                }
+                foreach (var item in phongGiamRemove)
+                {
+                    if (item.ID != phamNhan.PhongGiamID)
+                    {
+                        phongGiamConCho.Remove(item);
+                    }
+                }
+                ViewBag.PhongGiamID = new SelectList(phongGiamConCho, "ID", "TenPhong", phamNhan.PhongGiamID);
+            }
             return View(phamNhan);
         }
 

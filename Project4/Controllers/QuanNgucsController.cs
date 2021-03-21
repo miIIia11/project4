@@ -9,6 +9,9 @@ using System.Web;
 using System.Web.Mvc;
 using PagedList;
 using Project4.Models;
+using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Identity.EntityFramework;
+using System.Text.RegularExpressions;
 
 namespace Project4.Controllers
 {
@@ -19,6 +22,10 @@ namespace Project4.Controllers
         // GET: QuanNgucs 
         public ActionResult Index(string tenQuanNguc, string khuID, int? i)
         {
+            if (User.Identity.GetQuanNgucId() == "")
+            {
+                return RedirectToAction("DangNhap", "TaiKhoan");
+            }
             ViewBag.Khu = db.Khu.ToList(); 
             int _khuid = 0;
             if (string.IsNullOrEmpty(khuID)) _khuid = 1;
@@ -95,6 +102,10 @@ namespace Project4.Controllers
         // GET: QuanNgucs/Create
         public ActionResult Create()
         {
+            ViewBag.GioiTinh = new SelectList(Common.CommonConstant.gioiTinh, "Key", "Value", null);
+            ViewBag.KhuID = new SelectList(db.Khu, "ID", "TenKhu", null);
+            ViewBag.ChucVu = new SelectList(Common.CommonConstant.chucVu, "Key", "Value", null);
+            ViewBag.QuanHam = new SelectList(Common.CommonConstant.quanHam, "Key", "Value", null);
             return View();
         }
 
@@ -105,6 +116,7 @@ namespace Project4.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "ID,TenQuanNguc,AnhNhanDien,NgaySinh,QueQuan,GioiTinh,KhuID,NamCongTac,ThoiHanCongTac,CMND,ChucVu,QuanHam")] QuanNguc quanNguc, HttpPostedFileBase file)
         {
+            var UserManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(db));
             if (ModelState.IsValid)
             {
                 quanNguc.ID = Guid.NewGuid();
@@ -121,6 +133,17 @@ namespace Project4.Controllers
                 quanNguc.AnhNhanDien = url;
                 db.QuanNguc.Add(quanNguc);
                 db.SaveChanges();
+                var newUser = new ApplicationUser();
+                var generatedEmail = RemoveUnicodeAndSpace(quanNguc.TenQuanNguc) + @"@chihoa.com";
+                newUser.UserName = generatedEmail;
+                newUser.Email = generatedEmail;
+                newUser.QuanNgucID = quanNguc.ID;
+                string password = "123456";
+                var checkUser = UserManager.Create(newUser, password);
+                if (checkUser.Succeeded)
+                {
+                    var checkRole = UserManager.AddToRole(newUser.Id, "QuanNguc");
+                }
                 return RedirectToAction("Index");
             }
 
@@ -139,6 +162,10 @@ namespace Project4.Controllers
             {
                 return HttpNotFound();
             }
+            ViewBag.GioiTinh = new SelectList(Common.CommonConstant.gioiTinh, "Key", "Value", quanNguc.GioiTinh);
+            ViewBag.KhuID = new SelectList(db.Khu, "ID", "TenKhu", quanNguc.KhuID);
+            ViewBag.ChucVu = new SelectList(Common.CommonConstant.chucVu, "Key", "Value", quanNguc.ChucVu);
+            ViewBag.QuanHam = new SelectList(Common.CommonConstant.quanHam, "Key", "Value", quanNguc.QuanHam);
             ViewBag.NgaySinh = quanNguc.NgaySinh.HasValue ? quanNguc.NgaySinh.Value.ToString("MM/dd/yyyy") : null;
             return View(quanNguc);
         }
@@ -233,6 +260,32 @@ namespace Project4.Controllers
 
             // after successfully uploading redirect the user
             //return RedirectToAction("actionname", "controller name");
+        }
+
+        public static string RemoveUnicodeAndSpace(string text)
+        {
+            string[] arr1 = new string[] { "á", "à", "ả", "ã", "ạ", "â", "ấ", "ầ", "ẩ", "ẫ", "ậ", "ă", "ắ", "ằ", "ẳ", "ẵ", "ặ",
+            "đ",
+            "é","è","ẻ","ẽ","ẹ","ê","ế","ề","ể","ễ","ệ",
+            "í","ì","ỉ","ĩ","ị",
+            "ó","ò","ỏ","õ","ọ","ô","ố","ồ","ổ","ỗ","ộ","ơ","ớ","ờ","ở","ỡ","ợ",
+            "ú","ù","ủ","ũ","ụ","ư","ứ","ừ","ử","ữ","ự",
+            "ý","ỳ","ỷ","ỹ","ỵ",};
+            string[] arr2 = new string[] { "a", "a", "a", "a", "a", "a", "a", "a", "a", "a", "a", "a", "a", "a", "a", "a", "a",
+            "d",
+            "e","e","e","e","e","e","e","e","e","e","e",
+            "i","i","i","i","i",
+            "o","o","o","o","o","o","o","o","o","o","o","o","o","o","o","o","o",
+            "u","u","u","u","u","u","u","u","u","u","u",
+            "y","y","y","y","y",};
+            for (int i = 0; i < arr1.Length; i++)
+            {
+                text = text.Replace(arr1[i], arr2[i]);
+                text = text.Replace(arr1[i].ToUpper(), arr2[i].ToUpper());
+            }
+            text = Regex.Replace(text, @"\s", "");
+            text = text.ToLower();
+            return text;
         }
     }
 }

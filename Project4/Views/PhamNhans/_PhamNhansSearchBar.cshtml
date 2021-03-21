@@ -1,4 +1,11 @@
 ﻿@model  IEnumerable<Project4.Models.PhamNhanParams>
+@{
+    var khu = new Project4.Models.Khu();
+    if (!User.IsInRole("QuanNgucTruong"))
+    {
+        khu = (Project4.Models.Khu)ViewBag.Khu;
+    }
+}
 @using (Html.BeginForm("Index", "PhamNhans", FormMethod.Get))
 {
     <div class="container" id="thanhTimKiem">
@@ -12,8 +19,18 @@
             </div>
             <div class="col-md-1">Khu</div>
             <div class="col-md-3">
-                @Html.DropDownList("khuID", new SelectList(ViewBag.Khu, "ID", "TenKhu", ViewBag.SelectedKhu)
-                    , new { @class = "form-control", @id = "txtKhu", @onchange = "LoadLaiThanhTK()" })
+                @if (User.IsInRole("QuanNgucTruong"))
+                {
+                    @Html.DropDownList("khuID", new SelectList(ViewBag.Khu, "ID", "TenKhu", ViewBag.SelectedKhu)
+                        , new { @class = "form-control", @id = "txtKhu", @onchange = "LoadLaiThanhTK()" })
+                }
+                else
+                {
+                    <input name="khuID" type="text" value="@ViewBag.SelectedKhu" hidden />
+                    <select name="khuID" disabled="disabled" class="form-control">
+                        <option value="@khu.ID">@khu.TenKhu</option>
+                    </select>
+                }
             </div>
             <div class="col-md-1">Phòng</div>
             <div class="col-md-3">

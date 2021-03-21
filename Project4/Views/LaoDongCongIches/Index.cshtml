@@ -33,7 +33,7 @@
 <table class="table table-striped">
     <tr>
         <th>
-            @Html.DisplayNameFor(model => model.First().PhamNhanID)
+            @Html.DisplayNameFor(model => model.First().TenPhamNhan)
         </th>
         <th>
             @Html.DisplayNameFor(model => model.First().QuanNgucID)
@@ -61,7 +61,7 @@
         {
             <tr>
                 <td>
-                    @Html.DisplayFor(modelItem => item.PhamNhanID)
+                    @Html.DisplayFor(modelItem => item.TenPhamNhan)
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.QuanNgucID)
@@ -73,7 +73,14 @@
                     @Html.DisplayFor(modelItem => item.BieuHien)
                 </td>
                 <td>
-                    @Html.ActionLink("Chỉnh sửa", "Edit", new { id = item.ID }) |
+                    @if (item.DangBiBenh)
+                    {
+                        <p>Bệnh nhân đang bị bệnh, không thể sửa</p>
+                    }
+                    else
+                    {
+                        @Html.ActionLink("Chỉnh sửa", "Edit", new { id = item.ID })
+                    }|
                     @Html.ActionLink("Chi tiết", "Details", new { id = item.ID }) |
                     @Html.ActionLink("Xóa", "Delete", new { id = item.ID })
                 </td>

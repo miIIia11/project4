@@ -15,5 +15,7 @@ namespace Project4.Models
 
         [DisplayName("Ngày Chữa Trị")]
         public int NgayChuaTri { get; set; }
+
+        public DateTime NgayBatDauChuaTri { get; set; }
     }
 }

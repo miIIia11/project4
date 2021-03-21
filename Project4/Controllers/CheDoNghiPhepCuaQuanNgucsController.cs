@@ -18,15 +18,15 @@ namespace Project4.Controllers
         // GET: CheDoNghiPhepCuaQuanNgucs 
         public ActionResult Index(string tenQuanNguc, int? i)
         {
-<<<<<<< HEAD
+
             if (User.Identity.GetQuanNgucId() == "")
             {
                 return RedirectToAction("DangNhap", "TaiKhoan");
             }
             var khuList = db.Khu.ToList();
             ViewBag.KhuQuanLi = new SelectList(khuList, "ID", "ID"); 
-            return View(db.CheDoNghiPhepCuaQuanNguc.ToList());
-=======
+            //return View(db.CheDoNghiPhepCuaQuanNguc.ToList());
+
             if (string.IsNullOrEmpty(tenQuanNguc)) tenQuanNguc = "";
             var nghiphepList = from c in db.CheDoNghiPhepCuaQuanNguc
                                join q in db.QuanNguc
@@ -40,7 +40,7 @@ namespace Project4.Controllers
                                    LyDoNghi = c.LyDoNghi
                                }; 
             return View(nghiphepList.OrderBy(c => c.TenQuanNguc).ToPagedList(i ?? 1, 7));
->>>>>>> 1439f1cc4c1ae0c0eac42faa59d45066190de158
+
         }
 
         // GET: CheDoNghiPhepCuaQuanNgucs/Details/5

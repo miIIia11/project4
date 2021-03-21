@@ -18,16 +18,8 @@
         <div class="form-group">
             @Html.LabelFor(model => model.PhamNhanID, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.PhamNhanID, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.DropDownListFor(model => model.PhamNhanID, null, new { htmlAttributes = new { @class = "form-control" } })
                 @Html.ValidationMessageFor(model => model.PhamNhanID, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.QuanNgucID, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.QuanNgucID, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.QuanNgucID, "", new { @class = "text-danger" })
             </div>
         </div>
 
