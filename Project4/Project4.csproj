@@ -193,6 +193,7 @@
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\AnXa.cs" />
+    <Compile Include="Models\BanGiaoCongViecCuaQuanNgucNghi.cs" />
     <Compile Include="Models\BanGiaoPhamNhan.cs" />
     <Compile Include="Models\AnXaParam.cs" />
     <Compile Include="Models\Benh.cs" />
@@ -476,6 +477,7 @@
     <Content Include="Views\QuanNgucs\_Details.cshtml" />
     <Content Include="Views\CheDoNghiPhepCuaQuanNgucs\_PhongDamNhiemBoi.cshtml" />
     <Content Include="Views\PhamNhans\_PhongPartial.cshtml" />
+    <Content Include="Views\QuanNgucs\_PhongDamNhiemBoi.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

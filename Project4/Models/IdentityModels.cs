@@ -42,6 +42,7 @@ namespace Project4.Models
         public virtual DbSet<QuanNguc> QuanNguc { get; set; }
         public virtual DbSet<ThamGui> ThamGui { get; set; }
         public virtual DbSet<BanGiaoPhamNhan> BanGiaoPhamNhan { get; set; }
+        public virtual DbSet<BanGiaoCongViecCuaQuanNgucNghi> BanGiaoCongViecCuaQuanNgucNghi { get; set; }
         public static ApplicationDbContext Create()
         {
             return new ApplicationDbContext();

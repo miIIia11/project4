@@ -57,7 +57,17 @@ namespace Project4.Controllers
                 {
                     ViewBag.Khu = db.Khu.Find(khuquannguc.KhuID);
                     ViewBag.SelectedKhu = khuquannguc.KhuID;
-                    ViewBag.Phong = db.PhongGiam.Where(w => w.KhuID == khuquannguc.KhuID).ToList();
+                    var allPhong = db.PhongGiam.Where(w => w.KhuID == khuquannguc.KhuID).ToList();
+                    var idQuanNgucToGuid = Guid.Parse(quanNgucViaUser);
+                    var nhungPhongDangDuocBanGiaoTamThoi = db.BanGiaoPhamNhan.Where(w => w.QuanNgucNhanID == idQuanNgucToGuid && DbFunctions.DiffDays(DateTime.Now, w.NgayNhan) <= w.SoNgayBanGiao);
+                    var npddbgtt = nhungPhongDangDuocBanGiaoTamThoi.Select(s => s.PhongGiam).ToList();
+                    if (nhungPhongDangDuocBanGiaoTamThoi != null)
+                    {
+                        allPhong.AddRange(npddbgtt);
+                    }
+                    ViewBag.Phong = allPhong;
+                    if (string.IsNullOrEmpty(khuID)) khuID = khuquannguc.KhuID.ToString();
+                    if (string.IsNullOrEmpty(phongID)) phongID = db.PhongGiam.FirstOrDefault(f => f.KhuID.ToString() == khuID).ID.ToString();
                 }
 
 
@@ -83,7 +93,7 @@ namespace Project4.Controllers
                                join ph in db.PhongGiam
                                     on p.PhongGiamID equals ph.ID
                                where p.TenPhamNhan.Contains(txtTenHoacMa)
-                                   && p.IDKhu == khuid && p.PhongGiamID == phongid
+                                    && p.PhongGiamID == phongid //bỏ tìm theo khu đi
                                select new PhamNhanParams
                                {
                                    ID = p.ID,
