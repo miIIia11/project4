@@ -65,6 +65,12 @@ namespace Project4.Controllers
                     {
                         allPhong.AddRange(npddbgtt);
                     }
+                    var nhungPhongBanGiaoDoQuanNgucNghi = db.BanGiaoCongViecCuaQuanNgucNghi.Where(w => w.QuanNgucNhanID == idQuanNgucToGuid);
+                    var npbgdqnn = nhungPhongBanGiaoDoQuanNgucNghi.Select(s => s.PhongGiam).ToList();
+                    if (nhungPhongBanGiaoDoQuanNgucNghi != null)
+                    {
+                        allPhong.AddRange(npbgdqnn);
+                    }
                     ViewBag.Phong = allPhong;
                     if (string.IsNullOrEmpty(khuID)) khuID = khuquannguc.KhuID.ToString();
                     if (string.IsNullOrEmpty(phongID)) phongID = db.PhongGiam.FirstOrDefault(f => f.KhuID.ToString() == khuID).ID.ToString();
@@ -93,7 +99,7 @@ namespace Project4.Controllers
                                join ph in db.PhongGiam
                                     on p.PhongGiamID equals ph.ID
                                where p.TenPhamNhan.Contains(txtTenHoacMa)
-                                    && p.PhongGiamID == phongid //bỏ tìm theo khu đi
+                                    && p.PhongGiamID == phongid && DbFunctions.DiffDays(DateTime.Now, p.NgayVaoTrai) <= p.SoNgayGiamGiu //bỏ tìm theo khu đi
                                select new PhamNhanParams
                                {
                                    ID = p.ID,

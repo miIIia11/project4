@@ -144,6 +144,19 @@ namespace Project4.Controllers
                 {
                     var checkRole = UserManager.AddToRole(newUser.Id, "QuanNguc");
                 }
+                if (db.QuanNguc.Where(w => w.KhuID == quanNguc.KhuID).Count() > 1)
+                {
+                    var idPhongCuaKhu = db.PhongGiam.Where(w => w.KhuID == quanNguc.KhuID).Select(s => s.ID).ToList();
+                    var phongDangBanGiao = db.BanGiaoCongViecCuaQuanNgucNghi.Where(w => idPhongCuaKhu.Contains(w.PhongID.Value));
+                    if (phongDangBanGiao != null)
+                    {
+                        foreach (var item in phongDangBanGiao)
+                        {
+                            db.BanGiaoCongViecCuaQuanNgucNghi.Remove(item);
+                        }
+                    }
+                    db.SaveChanges();
+                }
                 return RedirectToAction("Index");
             }
 
@@ -186,6 +199,19 @@ namespace Project4.Controllers
                     quanNguc.AnhNhanDien = url;
                 }
                 db.Entry(quanNguc).State = EntityState.Modified;
+                if (db.QuanNguc.Where(w => w.KhuID == quanNguc.KhuID).Count() > 1)
+                {
+                    var idPhongCuaKhu = db.PhongGiam.Where(w => w.KhuID == quanNguc.KhuID).Select(s => s.ID).ToList();
+                    var phongDangBanGiao = db.BanGiaoCongViecCuaQuanNgucNghi.Where(w => idPhongCuaKhu.Contains(w.PhongID.Value));
+                    if (phongDangBanGiao != null)
+                    {
+                        foreach (var item in phongDangBanGiao)
+                        {
+                            db.BanGiaoCongViecCuaQuanNgucNghi.Remove(item);
+                        }
+                    }
+                    db.SaveChanges();
+                }
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
@@ -205,16 +231,29 @@ namespace Project4.Controllers
             {
                 return HttpNotFound();
             }
+            var quanNgucDamNhiem = db.QuanNguc;
+            ViewBag.QuanNgucDamNhiem = quanNgucDamNhiem.Where(w => w.ID != quanNgucDamNhiem.FirstOrDefault().ID);
+            ViewBag.Phong = db.PhongGiam.Where(w => w.KhuID == quanNgucDamNhiem.FirstOrDefault().KhuID).ToList();
             return View(quanNguc);
         }
 
         // POST: QuanNgucs/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public ActionResult DeleteConfirmed(Guid id)
+        public ActionResult DeleteConfirmed(Guid id, string[] phongName, string[] QuanNgucDamNhiem)
         {
             QuanNguc quanNguc = db.QuanNguc.Find(id);
             db.QuanNguc.Remove(quanNguc);
+            for (int i = 0; i < phongName.Length; i++)
+            {
+                var newBanGiao = new BanGiaoCongViecCuaQuanNgucNghi();
+                var phong = phongName[i];
+                var phongId = db.PhongGiam.FirstOrDefault(f => f.TenPhong == phong).ID;
+                newBanGiao.PhongID = phongId;
+                newBanGiao.QuanNgucNhanID = Guid.Parse(QuanNgucDamNhiem[i]);
+                newBanGiao.NgayNhan = DateTime.Now;
+                db.BanGiaoCongViecCuaQuanNgucNghi.Add(newBanGiao);
+            }
             db.SaveChanges();
             return RedirectToAction("Index");
         }
